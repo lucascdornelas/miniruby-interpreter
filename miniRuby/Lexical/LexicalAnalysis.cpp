@@ -1,6 +1,3 @@
-#include <iostream>
-
-#include <string>
 #include <cstdio>
 #include <cctype>
 #include <cassert>
@@ -11,8 +8,8 @@
 LexicalAnalysis::LexicalAnalysis(const char *filename) : m_line(1)
 {
     m_file = fopen(filename, "r");
-    // if (!m_file)
-    throw "Unable to open file";
+    if (!m_file)
+        throw "Unable to open file";
 }
 
 LexicalAnalysis::~LexicalAnalysis()
@@ -33,8 +30,6 @@ struct Lexeme LexicalAnalysis::nextToken()
     while (state != 12 && state != 13)
     {
         int c = getc(m_file);
-
-        std::cout << "[" << state << ", " << c << " ('" << (char)c << "')]" << std::endl;
 
         switch (state)
         {
