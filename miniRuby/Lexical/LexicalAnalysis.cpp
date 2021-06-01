@@ -30,6 +30,7 @@ struct Lexeme LexicalAnalysis::nextToken()
     while (state != 12 && state != 13)
     {
         int c = getc(m_file);
+        printf("%c",c);
 
         switch (state)
         {
@@ -66,6 +67,7 @@ struct Lexeme LexicalAnalysis::nextToken()
             else if (c == -1)
             {
                 lex.type = TKN_END_OF_FILE;
+                //lex.type = TKN_END_OF_FILE;
                 state = 13;
             }
             else
