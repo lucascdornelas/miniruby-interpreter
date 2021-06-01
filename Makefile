@@ -2,7 +2,8 @@ CXX=g++
 CXXFLAGS=-g -ggdb -O2 -Wall
 
 TARGET=minirubyi
-OBJS=minirubyi.o lexical/SymbolTable.o lexical/LexicalAnalysis.o
+OBJS=minirubyi.o
+# OBJS=minirubyi.o lexical/SymbolTable.o lexical/LexicalAnalysis.o
 
 all: $(TARGET)
 
@@ -14,9 +15,9 @@ install:
 
 minirubyi.o:
 
-lexical/SymbolTable.o: lexical/TokenType.h
+# lexical/SymbolTable.o: lexical/TokenType.h
 
-lexical/LexicalAnalysis.o: lexical/Lexeme.h lexical/SymbolTable.h
+# lexical/LexicalAnalysis.o: lexical/Lexeme.h lexical/SymbolTable.h
 
 $(TARGET):	$(OBJS)
 			$(CXX) -o $(TARGET) $(OBJS)
