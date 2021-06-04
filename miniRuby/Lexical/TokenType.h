@@ -15,6 +15,7 @@ enum TokenType
     TKN_COMMA,      // ,
     TKN_ASSIGN,     // =
     TKN_DOT,        // .
+    TKN_APOSTROPHE, // '
 
     // OPERATORS
     TKN_EQUALS,        // ==
@@ -87,6 +88,8 @@ inline std::string tt2str(enum TokenType type)
         return "ASSIGN";
     case TKN_DOT: // .
         return "DOT";
+    case TKN_APOSTROPHE: // '
+        return "APOSTROPHE";
 
     // OPERATORS
     case TKN_EQUALS: // ==

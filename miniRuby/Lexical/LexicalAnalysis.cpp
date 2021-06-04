@@ -53,8 +53,36 @@ struct Lexeme LexicalAnalysis::nextToken()
                 lex.token += (char)c;
                 state = 3;
             }
-            //{;;;}
-
+            //implementado por erick
+            else if(c == '=')
+            {
+                lex.token += (char)c;
+                state = 5;
+            }
+            //implementado por erick
+            else if(c == '<' || c == '>')
+            {
+                lex.token += (char)c;
+                state = 6;
+            }
+            //implementado por erick
+            else if(c == '*')
+            {
+                lex.token += (char)c;
+                state = 7;
+            }
+            //implementado por erick
+            else if(c == '!')
+            {
+                lex.token += (char)c;
+                state = 8;
+            }
+            //implementado por erick
+            else if (c == '_' || isalpha(c))
+            {
+				lex.token += (char) c;
+				state = 9;
+            }
             else if (isdigit(c))
             {
                 lex.token += (char)c;
@@ -62,6 +90,7 @@ struct Lexeme LexicalAnalysis::nextToken()
             }
             else if (c == '\'')
             {
+                lex.token += (char)c;
                 state = 11;
             }
             else if (c == -1)
@@ -94,25 +123,84 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 2;
             }
             break;
+        //implementado por erick
         case 3:
-            // TODO: Implement me!
-            break;
-        case 4:
-            // TODO: Implement me!
-            break;
-        case 5:
-            // TODO: Implement me!
-            break;
-        case 6:
-            // TODO: Implement me!
-            break;
-        case 7:
-            // TODO: Implement me!
-            break;
-        case 8:
-            if (c == '=')
+            if(c == '.')
             {
-                lex.token += (char)c;
+                lex.token += (char) c;
+				state = 4;
+            }
+            else
+            if (c != -1)
+				    ungetc(c, m_file);
+
+				state = 12;
+            break;
+        //implementado por erick
+        case 4:
+            if(c == '.')
+            {
+                lex.token += (char) c;
+				state = 12;
+            }
+            else
+            {
+                if (c != -1)
+				    ungetc(c, m_file);
+
+				state = 12;
+            }
+            break;
+        //implementado por erick
+        case 5:
+            if(c == '=')
+            {
+                lex.token += (char) c;
+				state = 6;
+            }
+            else
+            {
+                if (c != -1)
+				    ungetc(c, m_file);
+
+				state = 12;
+            }
+            break;
+        //implementado por erick
+        case 6:
+            if(c == '=')
+            {
+                lex.token += (char) c;
+				state = 12;
+            }
+            else
+            {
+                if (c != -1)
+				    ungetc(c, m_file);
+
+				state = 12;
+            }
+            break;
+        //implementado por erick
+        case 7:
+            if(c == '*')
+            {
+                lex.token += (char) c;
+				state = 12;
+            }
+            else
+            {
+                if (c != -1)
+				    ungetc(c, m_file);
+
+				state = 12;
+            }
+            break;
+        //implementado por erick
+        case 8:
+            if(c == '=')
+            {
+                lex.token += (char) c;
                 state = 12;
             }
             else
@@ -122,9 +210,22 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 13;
             }
             break;
+        //implementado por erick
         case 9:
-            // TODO: Implement me!
+            if(c == '_' || isalpha(c) || isdigit(c))
+            {
+                lex.token += (char) c;
+                state = 9;
+            }
+            else
+            {
+                if(c != -1)
+                    ungetc(c, m_file);
+
+                state = 12;
+            }
             break;
+
         case 10:
             if (isdigit(c))
             {
@@ -138,9 +239,21 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 13;
             }
             break;
+    //implementado por erick
         case 11:
-            // TODO: Implement me!
+            if(c == '\'')
+            {
+                lex.token += (char) c;
+                state = 11;
+            }
+            else
+            {
+                ungetc(c, m_file);
+                lex.type = TKN_APOSTROPHE;
+                state = 13;
+            }
             break;
+
         default:
             assert(false);
         }
