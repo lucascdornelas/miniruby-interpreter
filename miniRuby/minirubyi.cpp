@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         switch (lex.type)
         {
         case TKN_INVALID_TOKEN:
-            printf("%02d: Lexema invalido [%s]\n", l.line(), lex.token.c_str());
+            printf("%02d: Lexema invalido [%s]: %s\n", l.line(), lex.token.c_str(), tt2str(lex.type).c_str());
             break;
         case TKN_UNEXPECTED_EOF:
             printf("%02d: Fim de arquivo inesperado\n", l.line());
