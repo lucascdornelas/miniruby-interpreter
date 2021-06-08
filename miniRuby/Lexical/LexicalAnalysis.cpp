@@ -53,31 +53,31 @@ struct Lexeme LexicalAnalysis::nextToken()
                 lex.token += (char)c;
                 state = 3;
             }
-            //implementado por erick
+
             else if(c == '=')
             {
                 lex.token += (char)c;
                 state = 5;
             }
-            //implementado por erick
+
             else if(c == '<' || c == '>')
             {
                 lex.token += (char)c;
                 state = 6;
             }
-            //implementado por erick
+
             else if(c == '*')
             {
                 lex.token += (char)c;
                 state = 7;
             }
-            //implementado por erick
+
             else if(c == '!')
             {
                 lex.token += (char)c;
                 state = 8;
             }
-            //implementado por erick
+
             else if (c == '_' || isalpha(c))
             {
 				lex.token += (char) c;
@@ -90,7 +90,6 @@ struct Lexeme LexicalAnalysis::nextToken()
             }
             else if (c == '\'')
             {
-                lex.token += (char)c;
                 state = 11;
             }
             else if (c == ';' || c == ',' || c == '+' || c == '-' || c == '%' || c == '/' || c == '[' || c == ']' || c == '(' || c == ')')
@@ -101,7 +100,6 @@ struct Lexeme LexicalAnalysis::nextToken()
             else if (c == -1)
             {
                 lex.type = TKN_END_OF_FILE;
-                //lex.type = TKN_END_OF_FILE;
                 state = 13;
             }
             else
@@ -110,8 +108,8 @@ struct Lexeme LexicalAnalysis::nextToken()
                 lex.type = TKN_INVALID_TOKEN;
                 state = 13;
             }
-
             break;
+
         case 2:
             if (c == '\n')
             {
@@ -128,7 +126,7 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 2;
             }
             break;
-        //implementado por erick
+
         case 3:
             if(c == '.')
             {
@@ -141,7 +139,7 @@ struct Lexeme LexicalAnalysis::nextToken()
 
 				state = 12;
             break;
-        //implementado por erick
+
         case 4:
             if(c == '.')
             {
@@ -156,7 +154,7 @@ struct Lexeme LexicalAnalysis::nextToken()
 				state = 12;
             }
             break;
-        //implementado por erick
+
         case 5:
             if(c == '=')
             {
@@ -171,7 +169,7 @@ struct Lexeme LexicalAnalysis::nextToken()
 				state = 12;
             }
             break;
-        //implementado por erick
+
         case 6:
             if(c == '=')
             {
@@ -186,7 +184,7 @@ struct Lexeme LexicalAnalysis::nextToken()
 				state = 12;
             }
             break;
-        //implementado por erick
+
         case 7:
             if(c == '*')
             {
@@ -201,7 +199,7 @@ struct Lexeme LexicalAnalysis::nextToken()
 				state = 12;
             }
             break;
-        //implementado por erick
+
         case 8:
             if(c == '=')
             {
@@ -210,12 +208,11 @@ struct Lexeme LexicalAnalysis::nextToken()
             }
             else
             {
-                ungetc(c, m_file);
                 lex.type = TKN_INVALID_TOKEN;
                 state = 13;
             }
             break;
-        //implementado por erick
+
         case 9:
             if(c == '_' || isalpha(c) || isdigit(c))
             {
@@ -239,12 +236,14 @@ struct Lexeme LexicalAnalysis::nextToken()
             }
             else
             {
-                ungetc(c, m_file);
+                if(c != -1)
+                    ungetc(c, m_file);
+
                 lex.type = TKN_INTEGER;
                 state = 13;
             }
             break;
-    //implementado por erick
+
         case 11:
             if(c != '\'')
             {
@@ -255,7 +254,6 @@ struct Lexeme LexicalAnalysis::nextToken()
             {
                 if(c == -1)
                 {
-                    ungetc(c, m_file);
                     lex.type = TKN_UNEXPECTED_EOF;
                     state = 13;
                 }
