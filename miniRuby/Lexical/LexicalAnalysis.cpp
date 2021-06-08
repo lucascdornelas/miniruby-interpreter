@@ -89,7 +89,6 @@ struct Lexeme LexicalAnalysis::nextToken()
             }
             else if (c == '\'')
             {
-                lex.token += (char)c;
                 state = 11;
             }
             else if (c == ';' || c == ',' || c == '+' || c == '-' || c == '%' || c == '/' || c == '[' || c == ']' || c == '(' || c == ')')
@@ -253,13 +252,13 @@ struct Lexeme LexicalAnalysis::nextToken()
             {
                 if (c == -1)
                 {
-                    ungetc(c, m_file);
+                    // ungetc(c, m_file);
                     lex.type = TKN_UNEXPECTED_EOF;
                     state = 13;
                 }
                 else
                 {
-                    lex.token += (char)c;
+                    // lex.token += (char)c;
                     lex.type = TKN_STRING;
                     state = 13;
                 }
