@@ -5,7 +5,6 @@
 #include "LexicalAnalysis.h"
 #include "TokenType.h"
 
-
 LexicalAnalysis::LexicalAnalysis(const char *filename) : m_line(1)
 {
     m_file = fopen(filename, "r");
@@ -54,25 +53,25 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 3;
             }
             //implementado por erick
-            else if(c == '=')
+            else if (c == '=')
             {
                 lex.token += (char)c;
                 state = 5;
             }
             //implementado por erick
-            else if(c == '<' || c == '>')
+            else if (c == '<' || c == '>')
             {
                 lex.token += (char)c;
                 state = 6;
             }
             //implementado por erick
-            else if(c == '*')
+            else if (c == '*')
             {
                 lex.token += (char)c;
                 state = 7;
             }
             //implementado por erick
-            else if(c == '!')
+            else if (c == '!')
             {
                 lex.token += (char)c;
                 state = 8;
@@ -80,8 +79,8 @@ struct Lexeme LexicalAnalysis::nextToken()
             //implementado por erick
             else if (c == '_' || isalpha(c))
             {
-				lex.token += (char) c;
-				state = 9;
+                lex.token += (char)c;
+                state = 9;
             }
             else if (isdigit(c))
             {
@@ -130,82 +129,81 @@ struct Lexeme LexicalAnalysis::nextToken()
             break;
         //implementado por erick
         case 3:
-            if(c == '.')
+            if (c == '.')
             {
-                lex.token += (char) c;
-				state = 4;
+                lex.token += (char)c;
+                state = 4;
             }
-            else
-            if (c != -1)
-				    ungetc(c, m_file);
+            else if (c != -1)
+                ungetc(c, m_file);
 
-				state = 12;
+            state = 12;
             break;
         //implementado por erick
         case 4:
-            if(c == '.')
+            if (c == '.')
             {
-                lex.token += (char) c;
-				state = 12;
+                lex.token += (char)c;
+                state = 12;
             }
             else
             {
                 if (c != -1)
-				    ungetc(c, m_file);
+                    ungetc(c, m_file);
 
-				state = 12;
+                state = 12;
             }
             break;
         //implementado por erick
         case 5:
-            if(c == '=')
+            if (c == '=')
             {
-                lex.token += (char) c;
-				state = 6;
+                lex.token += (char)c;
+                state = 6;
             }
             else
             {
                 if (c != -1)
-				    ungetc(c, m_file);
+                    ungetc(c, m_file);
 
-				state = 12;
+                state = 12;
             }
             break;
         //implementado por erick
         case 6:
-            if(c == '=')
+            if (c == '=')
             {
-                lex.token += (char) c;
-				state = 12;
+                lex.token += (char)c;
+                state = 12;
             }
             else
             {
                 if (c != -1)
-				    ungetc(c, m_file);
+                    ungetc(c, m_file);
 
-				state = 12;
+                state = 12;
             }
             break;
         //implementado por erick
         case 7:
-            if(c == '*')
+            if (c == '*')
             {
-                lex.token += (char) c;
-				state = 12;
+                lex.token += (char)c;
+                state = 12;
             }
             else
             {
                 if (c != -1)
-				    ungetc(c, m_file);
+                    ungetc(c, m_file);
 
-				state = 12;
+                state = 12;
             }
             break;
         //implementado por erick
         case 8:
-            if(c == '=')
+            if (c == '=')
             {
-                lex.token += (char) c;
+                lex.token += (char)c;
                 state = 12;
             }
             else
@@ -217,14 +215,14 @@ struct Lexeme LexicalAnalysis::nextToken()
             break;
         //implementado por erick
         case 9:
-            if(c == '_' || isalpha(c) || isdigit(c))
+            if (c == '_' || isalpha(c) || isdigit(c))
             {
-                lex.token += (char) c;
+                lex.token += (char)c;
                 state = 9;
             }
             else
             {
-                if(c != -1)
+                if (c != -1)
                     ungetc(c, m_file);
 
                 state = 12;
@@ -244,16 +242,16 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 13;
             }
             break;
-    //implementado por erick
+            //implementado por erick
         case 11:
-            if(c != '\'')
+            if (c != '\'')
             {
-                lex.token += (char) c;
+                lex.token += (char)c;
                 state = 11;
             }
             else
             {
-                if(c == -1)
+                if (c == -1)
                 {
                     ungetc(c, m_file);
                     lex.type = TKN_UNEXPECTED_EOF;
@@ -261,6 +259,7 @@ struct Lexeme LexicalAnalysis::nextToken()
                 }
                 else
                 {
+                    lex.token += (char)c;
                     lex.type = TKN_STRING;
                     state = 13;
                 }
