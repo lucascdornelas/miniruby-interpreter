@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     try
     {
         LexicalAnalysis l(argv[1]);
-        printf("%s", argv[1]);
+        //printf("%s", argv[1]);
         /*
         // O código a seguir é dado para testar o interpretador.
         // TODO: descomentar depois que o analisador léxico estiver OK.
@@ -27,13 +27,14 @@ int main(int argc, char *argv[])
         struct Lexeme lex;
         while ((lex = l.nextToken()).type > 0)
         {
+
             printf("(\"%s\", %d)\n", lex.token.c_str(), lex.type);
         }
 
         switch (lex.type)
         {
         case TKN_INVALID_TOKEN:
-            printf("%02d: Lexema inválido [%s]\n", l.line(), lex.token.c_str());
+            printf("%02d: Lexema invalido [%s]\n", l.line(), lex.token.c_str());
             break;
         case TKN_UNEXPECTED_EOF:
             printf("%02d: Fim de arquivo inesperado\n", l.line());

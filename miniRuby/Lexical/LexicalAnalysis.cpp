@@ -30,7 +30,7 @@ struct Lexeme LexicalAnalysis::nextToken()
     while (state != 12 && state != 13)
     {
         int c = getc(m_file);
-        printf("%c",c);
+        //printf("%c",c);
 
         switch (state)
         {
@@ -78,7 +78,7 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 8;
             }
             //implementado por erick
-            else if (c == '_' || isalpha(c))
+            else if (c == '_' || isalpha(c) || c == ':' || c == '?')
             {
 				lex.token += (char) c;
 				state = 9;
@@ -92,6 +92,11 @@ struct Lexeme LexicalAnalysis::nextToken()
             {
                 lex.token += (char)c;
                 state = 11;
+            }
+            else if (c == ';' || c == ',' || c == '+' || c == '-' || c == '%' || c == '/' || c == '[' || c == ']' || c == '(' || c == ')')
+            {
+                lex.token += (char)c;
+                state = 12;
             }
             else if (c == -1)
             {
@@ -212,7 +217,7 @@ struct Lexeme LexicalAnalysis::nextToken()
             break;
         //implementado por erick
         case 9:
-            if(c == '_' || isalpha(c) || isdigit(c))
+            if(c == '_' || isalpha(c) || isdigit(c) || c == ':' || c == '?')
             {
                 lex.token += (char) c;
                 state = 9;
