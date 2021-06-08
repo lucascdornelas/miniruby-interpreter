@@ -5,6 +5,7 @@
 #include "LexicalAnalysis.h"
 #include "TokenType.h"
 
+
 LexicalAnalysis::LexicalAnalysis(const char *filename) : m_line(1)
 {
     m_file = fopen(filename, "r");
@@ -30,7 +31,6 @@ struct Lexeme LexicalAnalysis::nextToken()
     while (state != 12 && state != 13)
     {
         int c = getc(m_file);
-        //printf("%c",c);
 
         switch (state)
         {
@@ -78,7 +78,7 @@ struct Lexeme LexicalAnalysis::nextToken()
                 state = 8;
             }
             //implementado por erick
-            else if (c == '_' || isalpha(c) || c == ':' || c == '?')
+            else if (c == '_' || isalpha(c))
             {
 				lex.token += (char) c;
 				state = 9;
@@ -217,7 +217,7 @@ struct Lexeme LexicalAnalysis::nextToken()
             break;
         //implementado por erick
         case 9:
-            if(c == '_' || isalpha(c) || isdigit(c) || c == ':' || c == '?')
+            if(c == '_' || isalpha(c) || isdigit(c))
             {
                 lex.token += (char) c;
                 state = 9;
@@ -246,16 +246,24 @@ struct Lexeme LexicalAnalysis::nextToken()
             break;
     //implementado por erick
         case 11:
-            if(c == '\'')
+            if(c != '\'')
             {
                 lex.token += (char) c;
                 state = 11;
             }
             else
             {
-                ungetc(c, m_file);
-                lex.type = TKN_APOSTROPHE;
-                state = 13;
+                if(c == -1)
+                {
+                    ungetc(c, m_file);
+                    lex.type = TKN_UNEXPECTED_EOF;
+                    state = 13;
+                }
+                else
+                {
+                    lex.type = TKN_STRING;
+                    state = 13;
+                }
             }
             break;
 

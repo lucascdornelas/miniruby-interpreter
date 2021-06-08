@@ -77,7 +77,7 @@ inline std::string tt2str(enum TokenType type)
     case TKN_INVALID_TOKEN:
         return "INVALID_TOKEN";
     case TKN_END_OF_FILE:
-        return "END_OF_LINE";
+        return "END_OF_FILE";
 
         // SYMBOLS
     case TKN_SEMI_COLON: // ;
