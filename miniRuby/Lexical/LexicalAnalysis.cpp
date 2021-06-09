@@ -127,10 +127,13 @@ struct Lexeme LexicalAnalysis::nextToken()
                 lex.token += (char)c;
                 state = 4;
             }
-            else if (c != -1)
-                ungetc(c, m_file);
+            else
+            {
+                if (c != -1)
+                        ungetc(c, m_file);
 
-            state = 12;
+                state = 12;
+            }
             break;
 
         case 4:
@@ -201,8 +204,11 @@ struct Lexeme LexicalAnalysis::nextToken()
             }
             else
             {
-                lex.type = TKN_INVALID_TOKEN;
-                state = 13;
+                if(c == -1)
+                {
+                    lex.type = TKN_UNEXPECTED_EOF;
+                    state = 13;
+                }
             }
             break;
 
@@ -240,14 +246,22 @@ struct Lexeme LexicalAnalysis::nextToken()
         case 11:
             if (c != '\'')
             {
-                lex.token += (char)c;
-                state = 11;
+                if(c == ';')
+                {
+                    lex.type = TKN_UNEXPECTED_EOF;
+                    state = 13;
+                }
+                else
+                {
+                    lex.token += (char)c;
+                    state = 11;
+                }
             }
             else
             {
                 if (c == -1)
                 {
-                    // ungetc(c, m_file);
+                    //ungetc(c, m_file);
                     lex.type = TKN_UNEXPECTED_EOF;
                     state = 13;
                 }
