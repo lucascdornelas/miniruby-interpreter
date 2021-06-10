@@ -16,11 +16,11 @@ int main(int argc, char *argv[])
     {
         LexicalAnalysis l(argv[1]);
         //printf("%s", argv[1]);
-        /*
+
         // O código a seguir é dado para testar o interpretador.
         // TODO: descomentar depois que o analisador léxico estiver OK.
         SyntaticAnalysis s(l);
-        Command* c = s.start();
+        /*Command* c = s.start();
         c->execute();
         delete c;
 */

@@ -66,20 +66,74 @@ void SyntaticAnalysis::showError() {
 
     // <cmd>      ::= <if> | <unless> | <while> | <until> | <for> | <output> | <assign>
     void SyntaticAnalysis::procCmd() {
-        // ...
-        if (m_current.type == TKN_PUTS || m_current.type == TKN_PRINT) {
+
+        if (m_current.type == TKN_IF)
+            procIf();
+
+        else if (m_current.type == TKN_UNLESS)
+            procUnless();
+
+        else if (m_current.type == TKN_WHILE)
+            procWhile();
+
+        else if (m_current.type == TKN_UNTIL)
+            procUntil();
+
+        else if (m_current.type == TKN_FOR)
+            procFor();
+
+        else if (m_current.type == TKN_PUTS || m_current.type == TKN_PRINT)
             procOutput();
-        } else {
+        else
             procAssign();
-        }
+
     }
 
     // <if>       ::= if <boolexpr> [ then ] <code> { elsif <boolexpr> [ then ] <code> } [ else <code> ] end
     void SyntaticAnalysis::procIf() {
+        eat(TKN_IF);
+        procBoolExpr();
+
+        if (m_current.type == TKN_THEN)
+            advance();
+
+        procCode();
+
+        while(m_current.type == TKN_ELSIF)
+        {
+            advance();
+            procBoolExpr();
+            if(m_current.type == TKN_THEN)
+                advance();
+            procCode();
+        }
+
+        if(m_current.type == TKN_ELSE)
+        {
+            advance();
+            procCode();
+        }
+
+        eat(TKN_END);
     }
 
     // <unless>   ::= unless <boolexpr> [ then ] <code> [ else <code> ] end
     void SyntaticAnalysis::procUnless() {
+        eat(TKN_UNLESS);
+        procBoolExpr();
+
+        if (m_current.type == TKN_THEN)
+            advance();
+
+        procCode();
+
+        if(m_current.type == TKN_ELSE)
+        {
+            advance();
+            procCode();
+        }
+
+        eat(TKN_END);
     }
 
     // <while>    ::= while <boolexpr> [ do ] <code> end
@@ -96,21 +150,38 @@ void SyntaticAnalysis::showError() {
 
     // <until>    ::= until <boolexpr> [ do ] <code> end
     void SyntaticAnalysis::procUntil() {
+        eat(TKN_UNTIL);
+        procBoolExpr();
+
+        if (m_current.type == TKN_DO)
+            advance();
+
+        procCode();
+        eat(TKN_END);
     }
 
     // <for>      ::= for <id> in <expr> [ do ] <code> end
     void SyntaticAnalysis::procFor() {
+        eat(TKN_FOR);
+        procId();
+        eat(TKN_IN);
+        procExpr();
+
+        if (m_current.type == TKN_DO)
+            advance();
+
+        procCode();
+        eat(TKN_END);
     }
 
     // <output>   ::= ( puts | print ) [ <expr> ] [ <post> ] ';'
     void SyntaticAnalysis::procOutput() {
-        if (m_current.type == TKN_PUTS) {
+        if (m_current.type == TKN_PUTS)
             advance();
-        } else if (m_current.type == TKN_PRINT) {
+        else if (m_current.type == TKN_PRINT)
             advance();
-        } else {
+        else
             showError();
-        }
 
         if (m_current.type == TKN_ADD ||
                 m_current.type == TKN_SUB ||
@@ -157,27 +228,71 @@ void SyntaticAnalysis::showError() {
 
     // <post>     ::= ( if | unless ) <boolexpr>
     void SyntaticAnalysis::procPost() {
-        if (m_current.type == TKN_IF) {
+        if (m_current.type == TKN_IF)
             advance();
-        } else if (m_current.type == TKN_UNLESS) {
+        else if (m_current.type == TKN_UNLESS)
             advance();
-        } else {
+        else
             showError();
-        }
 
         procBoolExpr();
     }
 
     // <boolexpr> ::= [ not ] <cmpexpr> [ (and | or) <boolexpr> ]
     void SyntaticAnalysis::procBoolExpr() {
+        if (m_current.type == TKN_NOT)
+            advance();
+        procEmpExpr();
+        if(m_current.type == TKN_AND || m_current.type == TKN_OR)
+        {
+            if(m_current.type == TKN_AND)
+                advance();
+            else if(m_current.type == TKN_OR)
+                advance();
+            else
+                showError();
+
+            procBoolExpr();
+        }
     }
 
     // <cmpexpr>  ::= <expr> ( '==' | '!=' | '<' | '<=' | '>' | '>=' | '===' ) <expr>
     void SyntaticAnalysis::procEmpExpr() {
+        procExpr();
+        if(m_current.type == TKN_EQUALS)
+            advance();
+        else if(m_current.type == TKN_NOT_EQUALS)
+            advance();
+        else if(m_current.type == TKN_LOWER)
+            advance();
+        else if(m_current.type == TKN_LOWER_EQ)
+            advance();
+        else if(m_current.type == TKN_GREATER)
+            advance();
+        else if(m_current.type == TKN_GREATER_EQ)
+            advance();
+        else if(m_current.type == TKN_CONTAINS)
+            advance();
+        else
+            showError();
+
+        procExpr();
     }
 
     // <expr>     ::= <arith> [ ( '..' | '...' ) <arith> ]
     void SyntaticAnalysis::procExpr() {
+        procArith();
+        if(m_current.type == TKN_RANGE_WITH || m_current.type == TKN_RANGE_WITHOUT)
+        {
+            if(m_current.type == TKN_RANGE_WITH)
+                advance();
+            else if(m_current.type == TKN_RANGE_WITHOUT)
+                advance();
+            else
+                showError();
+
+            procArith();
+        }
     }
 
     // <arith>    ::= <term> { ('+' | '-') <term> }
@@ -192,6 +307,12 @@ void SyntaticAnalysis::showError() {
 
     // <term>     ::= <power> { ('*' | '/' | '%') <power> }
     void SyntaticAnalysis::procTerm() {
+        procPower();
+
+        while (m_current.type == TKN_MUL || m_current.type == TKN_DIV || m_current.type == TKN_MOD) {
+            advance();
+            procPower();
+        }
     }
 
     // <power>    ::= <factor> { '**' <factor> }
@@ -206,42 +327,36 @@ void SyntaticAnalysis::showError() {
 
     // <factor>   ::= [ '+' | '-' ] ( <const> | <input> | <access> ) [ <function> ]
     void SyntaticAnalysis::procFactor() {
+        if (m_current.type == TKN_ADD || m_current.type == TKN_SUB)
+            advance();
+        if(m_current.type == TKN_INTEGER)
+            procConst();
+        else if(m_current.type == TKN_GETS || m_current.type == TKN_RAND)
+            procInput();
+        else if(m_current.type == TKN_ID || m_current.type == TKN_OPEN_PAR)
+            procAccess();
+        else
+            showError();
+        if(m_current.type == TKN_DOT)
+            procFunction();
     }
 
     // <const>    ::= <integer> | <string> | <array>
     void SyntaticAnalysis::procConst() {
         if(m_current.type == TKN_INTEGER)
-        {
             procInteger();
-        }
         else if(m_current.type == TKN_STRING)
-        {
             procString();
-        }
         else if(m_current.type == TKN_OPEN_BRA)
-        {
             procArray();
-        }
-        else
-        {
-            showError();
-        }
     }
 
     // <input>    ::= gets | rand
     void SyntaticAnalysis::procInput() {
         if(m_current.type == TKN_GETS)
-        {
-            eat(TKN_GETS);
-        }
+            advance();
         else if(m_current.type == TKN_RAND)
-        {
-            eat(TKN_RAND);
-        }
-        else
-        {
-            showError();
-        }
+            advance();
     }
 
     // <array>    ::= '[' [ <expr> { ',' <expr> } ] ']'
@@ -270,15 +385,15 @@ void SyntaticAnalysis::showError() {
         eat(TKN_CLOSE_BRA);
     }
 
+
     // <access>   ::= ( <id> | '(' <expr> ')' ) [ '[' <expr> ']' ]
     void SyntaticAnalysis::procAccess() {
         if(m_current.type == TKN_ID)
-        {
             procId();
-        }
         else if(m_current.type == TKN_OPEN_PAR)
         {
             eat(TKN_OPEN_PAR);
+
             if (m_current.type == TKN_ADD ||
                 m_current.type == TKN_SUB ||
                 m_current.type == TKN_INTEGER ||
@@ -288,19 +403,13 @@ void SyntaticAnalysis::showError() {
                 m_current.type == TKN_RAND ||
                 m_current.type == TKN_ID ||
                 m_current.type == TKN_OPEN_PAR)
-            {
-                procExpr();
-            }
+            procExpr();
             else
-            {
                 showError();
-            }
             eat(TKN_CLOSE_PAR);
         }
         else
-        {
             showError();
-        }
 
         if(m_current.type==TKN_OPEN_BRA)
         {
@@ -314,35 +423,23 @@ void SyntaticAnalysis::showError() {
                 m_current.type == TKN_RAND ||
                 m_current.type == TKN_ID ||
                 m_current.type == TKN_OPEN_PAR)
-            {
-                procExpr();
-            }
-            else
-            {
-                showError();
-            }
+            procExpr();
             eat(TKN_CLOSE_BRA);
         }
     }
+
+
     // <function> ::= '.' ( length | to_i | to_s )
     void SyntaticAnalysis::procFunction() {
         eat(TKN_DOT);
         if(m_current.type == TKN_LENGTH)
-        {
-            eat(TKN_LENGTH);
-        }
+           advance();
         else if(m_current.type == TKN_TO_INT)
-        {
-            eat(TKN_TO_INT);
-        }
+           advance();
         else if(m_current.type == TKN_TO_STR)
-        {
-            eat(TKN_TO_STR);
-        }
+           advance();
         else
-        {
             showError();
-        }
     }
 
     void SyntaticAnalysis::procInteger() {
