@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cctype>
 #include <cassert>
+#include <string>
 
 #include "LexicalAnalysis.h"
 #include "TokenType.h"
@@ -9,7 +10,7 @@ LexicalAnalysis::LexicalAnalysis(const char *filename) : m_line(1)
 {
     m_file = fopen(filename, "r");
     if (!m_file)
-        throw "Unable to open file";
+        throw std::string("Unable to open file");
 }
 
 LexicalAnalysis::~LexicalAnalysis()

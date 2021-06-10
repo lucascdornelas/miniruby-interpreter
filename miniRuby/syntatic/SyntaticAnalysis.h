@@ -22,6 +22,32 @@ private:
     void eat(enum TokenType type);
     void showError();
 
+    void procCode();
+    void procCmd();
+    void procIf();
+    void procUnless();
+    void procWhile();
+    void procUntil();
+    void procFor();
+    void procOutput();
+    void procAssign();
+    void procPost();
+    void procBoolExpr();
+    void procEmpExpr();
+    void procExpr();
+    void procArith();
+    void procTerm();
+    void procPower();
+    void procFactor();
+    void procConst();
+    void procInput();
+    void procArray();
+    void procAccess();
+    void procFunction();
+    void procInteger();
+    void procString();
+    void procId();
+
 };
 
 #endif

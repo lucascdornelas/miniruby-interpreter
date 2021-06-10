@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "lexical/LexicalAnalysis.h"
-//#include "syntatic/SyntaticAnalysis.h"
+#include "syntatic/SyntaticAnalysis.h"
 //#include "interpreter/command/Command.h"
 
 int main(int argc, char *argv[])
