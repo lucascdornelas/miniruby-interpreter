@@ -1,6 +1,9 @@
+#include <iostream>
 #include <cstdlib>
+#include <string>
 
 #include "SyntaticAnalysis.h"
+#include "../lexical/TokenType.h"
 //#include "../interpreter/command/Command.h"
 
 SyntaticAnalysis::SyntaticAnalysis(LexicalAnalysis& lex) :
@@ -11,23 +14,26 @@ SyntaticAnalysis::~SyntaticAnalysis() {
 }
 
 Command* SyntaticAnalysis::start() {
+    procCmd();
+    eat(TKN_END_OF_FILE);
     return 0;
 }
 
 void SyntaticAnalysis::advance() {
-    // printf("Advanced (\"%s\", %d)\n",
-    //     m_current.token.c_str(), m_current.type);
+    printf("Advanced (\"%s\", %s)\n",
+    m_current.token.c_str(), tt2str(m_current.type).c_str());
     m_current = m_lex.nextToken();
 }
 
 void SyntaticAnalysis::eat(enum TokenType type) {
-    // printf("Expected (..., %d), found (\"%s\", %d)\n",
-    //     type, m_current.token.c_str(), m_current.type);
-    if (type == m_current.type) {
+    printf("Expected (..., %s), found (\"%s\", %s)\n",
+    tt2str(type).c_str(), m_current.token.c_str(), tt2str(m_current.type).c_str());
+    if (type == m_current.type)
         m_current = m_lex.nextToken();
-    } else {
+    else
         showError();
-    }
+
+    //printf("LEXEMA: %s\n",tt2str(m_current.type).c_str());
 }
 
 void SyntaticAnalysis::showError() {
@@ -45,7 +51,6 @@ void SyntaticAnalysis::showError() {
             printf("Lexema não esperado [%s]\n", m_current.token.c_str());
             break;
     }
-
     exit(1);
 }
 
@@ -84,9 +89,10 @@ void SyntaticAnalysis::showError() {
 
         else if (m_current.type == TKN_PUTS || m_current.type == TKN_PRINT)
             procOutput();
-        else
+        else if (m_current.type == TKN_ID || m_current.type == TKN_OPEN_PAR)
             procAssign();
-
+        else
+            showError();
     }
 
     // <if>       ::= if <boolexpr> [ then ] <code> { elsif <boolexpr> [ then ] <code> } [ else <code> ] end
@@ -200,6 +206,7 @@ void SyntaticAnalysis::showError() {
         }
 
         eat(TKN_SEMI_COLON);
+        procCode();
     }
 
     // <assign>   ::= <access> { ',' <access> } '=' <expr> { ',' <expr> } [ <post> ] ';'
@@ -224,6 +231,7 @@ void SyntaticAnalysis::showError() {
         }
 
         eat(TKN_SEMI_COLON);
+        procCode();
     }
 
     // <post>     ::= ( if | unless ) <boolexpr>
@@ -329,7 +337,7 @@ void SyntaticAnalysis::showError() {
     void SyntaticAnalysis::procFactor() {
         if (m_current.type == TKN_ADD || m_current.type == TKN_SUB)
             advance();
-        if(m_current.type == TKN_INTEGER)
+        if(m_current.type == TKN_INTEGER || m_current.type == TKN_STRING || m_current.type == TKN_OPEN_BRA)
             procConst();
         else if(m_current.type == TKN_GETS || m_current.type == TKN_RAND)
             procInput();
