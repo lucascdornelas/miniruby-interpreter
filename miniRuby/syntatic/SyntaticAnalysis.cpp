@@ -14,7 +14,8 @@ SyntaticAnalysis::~SyntaticAnalysis() {
 }
 
 Command* SyntaticAnalysis::start() {
-    procCmd();
+    procCode();
+
     eat(TKN_END_OF_FILE);
     return 0;
 }
@@ -206,7 +207,6 @@ void SyntaticAnalysis::showError() {
         }
 
         eat(TKN_SEMI_COLON);
-        procCode();
     }
 
     // <assign>   ::= <access> { ',' <access> } '=' <expr> { ',' <expr> } [ <post> ] ';'
@@ -231,7 +231,6 @@ void SyntaticAnalysis::showError() {
         }
 
         eat(TKN_SEMI_COLON);
-        procCode();
     }
 
     // <post>     ::= ( if | unless ) <boolexpr>
@@ -362,9 +361,9 @@ void SyntaticAnalysis::showError() {
     // <input>    ::= gets | rand
     void SyntaticAnalysis::procInput() {
         if(m_current.type == TKN_GETS)
-            advance();
+            eat(TKN_GETS);
         else if(m_current.type == TKN_RAND)
-            advance();
+            eat(TKN_RAND);
     }
 
     // <array>    ::= '[' [ <expr> { ',' <expr> } ] ']'
@@ -386,13 +385,11 @@ void SyntaticAnalysis::showError() {
             while (m_current.type == TKN_COMMA)
             {
                 advance();
-
                 procExpr();
             }
         }
         eat(TKN_CLOSE_BRA);
     }
-
 
     // <access>   ::= ( <id> | '(' <expr> ')' ) [ '[' <expr> ']' ]
     void SyntaticAnalysis::procAccess() {
@@ -401,7 +398,6 @@ void SyntaticAnalysis::showError() {
         else if(m_current.type == TKN_OPEN_PAR)
         {
             eat(TKN_OPEN_PAR);
-
             if (m_current.type == TKN_ADD ||
                 m_current.type == TKN_SUB ||
                 m_current.type == TKN_INTEGER ||
@@ -436,7 +432,6 @@ void SyntaticAnalysis::showError() {
         }
     }
 
-
     // <function> ::= '.' ( length | to_i | to_s )
     void SyntaticAnalysis::procFunction() {
         eat(TKN_DOT);
@@ -461,4 +456,3 @@ void SyntaticAnalysis::showError() {
     void SyntaticAnalysis::procId() {
         eat(TKN_ID);
     }
-
