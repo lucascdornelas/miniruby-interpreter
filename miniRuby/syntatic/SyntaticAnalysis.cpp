@@ -250,7 +250,7 @@ void SyntaticAnalysis::showError() {
     void SyntaticAnalysis::procBoolExpr() {
         if (m_current.type == TKN_NOT)
             advance();
-        procEmpExpr();
+        procCmpExpr();
         if(m_current.type == TKN_AND || m_current.type == TKN_OR)
         {
             if(m_current.type == TKN_AND)
@@ -265,7 +265,7 @@ void SyntaticAnalysis::showError() {
     }
 
     // <cmpexpr>  ::= <expr> ( '==' | '!=' | '<' | '<=' | '>' | '>=' | '===' ) <expr>
-    void SyntaticAnalysis::procEmpExpr() {
+    void SyntaticAnalysis::procCmpExpr() {
         procExpr();
         if(m_current.type == TKN_EQUALS)
             advance();

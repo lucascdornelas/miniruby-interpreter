@@ -33,7 +33,7 @@ private:
     void procAssign();
     void procPost();
     void procBoolExpr();
-    void procEmpExpr();
+    void procCmpExpr();
     void procExpr();
     void procArith();
     void procTerm();
@@ -47,7 +47,7 @@ private:
     void procInteger();
     void procString();
     void procId();
-
+    
 };
 
 #endif
