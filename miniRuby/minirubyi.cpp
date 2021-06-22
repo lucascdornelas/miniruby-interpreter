@@ -2,7 +2,7 @@
 
 #include "lexical/LexicalAnalysis.h"
 #include "syntatic/SyntaticAnalysis.h"
-//#include "interpreter/command/Command.h"
+#include "interpreter/command/Command.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,11 +21,11 @@ int main(int argc, char *argv[])
         // TODO: descomentar depois que o analisador léxico estiver OK.
         SyntaticAnalysis s(l);
         s.start();
-        /*
+        
         Command* c = s.start();
         c->execute();
         delete c;
-        */
+        
         struct Lexeme lex;
        /* while ((lex = l.nextToken()).type > 0)
         {
