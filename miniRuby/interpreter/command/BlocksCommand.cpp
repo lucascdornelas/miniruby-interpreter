@@ -1,7 +1,11 @@
+#include <iostream>
+#include <list>
+
 #include "BlocksCommand.h"
 
-BlocksCommand::BlocksCommand(int line)
-	: Command(line) {
+
+BlocksCommand::BlocksCommand(int line, std::list<Command*> m_cmds)
+	: Command(line), m_cmds(m_cmds) {
 }
 
 BlocksCommand::~BlocksCommand() {
