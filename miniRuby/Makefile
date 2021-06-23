@@ -2,7 +2,7 @@ CXX=g++
 CXXFLAGS=-g -ggdb -O2 -Wall
 
 TARGET=minirubyi
-OBJS=minirubyi.o lexical/SymbolTable.o lexical/LexicalAnalysis.o syntatic/SyntaticAnalysis.o interpreter/value/IntegerValue.o interpreter/value/StringValue.o interpreter/value/ArrayValue.o interpreter/util/Memory.o interpreter/command/BlocksCommand.o
+OBJS=minirubyi.o lexical/SymbolTable.o lexical/LexicalAnalysis.o syntatic/SyntaticAnalysis.o interpreter/value/IntegerValue.o interpreter/value/StringValue.o interpreter/value/ArrayValue.o interpreter/util/Memory.o interpreter/command/BlocksCommand.o interpreter/command/AssignCommand.o interpreter/command/WhileCommand.o interpreter/command/IfCommand.o
 
 all: $(TARGET)
 
@@ -29,6 +29,12 @@ interpreter/value/ArrayValue.o: interpreter//value/ArrayValue.h interpreter/valu
 interpreter/util/Memory.o: interpreter/util/Memory.h 
 
 interpreter/command/BlocksCommand.o: interpreter/command/BlocksCommand.h interpreter/command/Command.h
+
+interpreter/command/AssignCommand.o: interpreter/command/AssignCommand.h interpreter/command/Command.h interpreter/expr/Expr.h
+
+interpreter/command/WhileCommandCommand.o: interpreter/command/WhileCommand.h interpreter/command/Command.h 
+
+interpreter/command/IfCommand.o: interpreter/command/IfCommand.h interpreter/command/Command.h interpreter/expr/BoolExpr.h
 
 $(TARGET):	$(OBJS)
 			$(CXX) -o $(TARGET) $(OBJS)

@@ -8,7 +8,7 @@
 
 class BlocksCommand : public Command {
 	public:
-		BlocksCommand(int line, std::list<Command*> m_cmds);
+		BlocksCommand(int line, std::list<Command*> cmds);
 		virtual ~BlocksCommand();
 
 		virtual void execute();

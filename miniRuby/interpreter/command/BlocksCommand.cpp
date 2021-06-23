@@ -3,9 +3,8 @@
 
 #include "BlocksCommand.h"
 
-
-BlocksCommand::BlocksCommand(int line, std::list<Command*> m_cmds)
-	: Command(line), m_cmds(m_cmds) {
+BlocksCommand::BlocksCommand(int line, std::list<Command*> cmds)
+	: Command(line), m_cmds(cmds) {
 }
 
 BlocksCommand::~BlocksCommand() {
