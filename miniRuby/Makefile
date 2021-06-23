@@ -2,7 +2,7 @@ CXX=g++
 CXXFLAGS=-g -ggdb -O2 -Wall
 
 TARGET=minirubyi
-OBJS=minirubyi.o lexical/SymbolTable.o lexical/LexicalAnalysis.o syntatic/SyntaticAnalysis.o interpreter/value/IntegerValue.o interpreter/value/StringValue.o interpreter/value/ArrayValue.o interpreter/util/Memory.o interpreter/command/BlocksCommand.o interpreter/command/AssignCommand.o interpreter/command/WhileCommand.o interpreter/command/IfCommand.o
+OBJS=minirubyi.o lexical/SymbolTable.o lexical/LexicalAnalysis.o syntatic/SyntaticAnalysis.o interpreter/value/IntegerValue.o interpreter/value/StringValue.o interpreter/value/ArrayValue.o interpreter/util/Memory.o interpreter/command/BlocksCommand.o interpreter/command/AssignCommand.o interpreter/command/WhileCommand.o interpreter/command/ForCommand.o interpreter/command/IfCommand.o
 
 all: $(TARGET)
 
@@ -32,7 +32,9 @@ interpreter/command/BlocksCommand.o: interpreter/command/BlocksCommand.h interpr
 
 interpreter/command/AssignCommand.o: interpreter/command/AssignCommand.h interpreter/command/Command.h interpreter/expr/Expr.h
 
-interpreter/command/WhileCommandCommand.o: interpreter/command/WhileCommand.h interpreter/command/Command.h 
+interpreter/command/WhileCommand.o: interpreter/command/WhileCommand.h interpreter/command/Command.h 
+
+interpreter/command/ForCommand.o: interpreter/command/ForCommand.h 
 
 interpreter/command/IfCommand.o: interpreter/command/IfCommand.h interpreter/command/Command.h interpreter/expr/BoolExpr.h
 

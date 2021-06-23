@@ -7,10 +7,10 @@ Variable::Variable(int line, const std::string& name)
 Variable::~Variable() {
 }
 
-Type* Variable::expr() {
+std::vector<Type*>* Variable::expr() {
 	return Memory::read(name);
 }
 
-void Variable::setValue(Type* value) {
+void Variable::setValue(std::vector<Type*>* value) {
 	Memory::write(name, value);
 }

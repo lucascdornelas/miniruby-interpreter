@@ -5,20 +5,19 @@
 #include "Expr.h"
 #include "../util/Memory.h"
 
-class Variable : public Expr
-{
+class Variable : public Expr {
 public:
   Variable(int line, const std::string& name);
   virtual ~Variable();
 
-  virtual Type *expr();
-
-  void setValue(Type* value);
-  const std::string& getName() const {return name;}
+  const std::string& getName() const { return name; }
+  virtual std::vector<Type*>* expr(); 
+  void setValue(std::vector<Type*>* value);
+  
 
 private:
   std::string name;
-  Type* value;
+  std::vector<Type*>* value;
 };
 
 #endif
