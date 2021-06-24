@@ -3,8 +3,8 @@
 
 #include "Command.h"
 #include "../expr/Expr.h"
-#include "../expr/Variable.h"
 #include "../value/IntegerValue.h"
+#include "../expr/Variable.h"
 
 class ForCommand:public Command{
 
@@ -13,7 +13,7 @@ public:
 
   virtual ~ForCommand();
 
-  virtual void Execute();
+  virtual void execute();
 
 private:
   Variable* m_var;

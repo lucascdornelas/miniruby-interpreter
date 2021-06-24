@@ -34,7 +34,7 @@ interpreter/command/AssignCommand.o: interpreter/command/AssignCommand.h interpr
 
 interpreter/command/WhileCommand.o: interpreter/command/WhileCommand.h interpreter/command/Command.h 
 
-interpreter/command/ForCommand.o: interpreter/command/ForCommand.h 
+interpreter/command/ForCommand.o: interpreter/command/ForCommand.h interpreter/expr/Expr.h interpreter/value/IntegerValue.h interpreter/expr/Variable.h 
 
 interpreter/command/IfCommand.o: interpreter/command/IfCommand.h interpreter/command/Command.h interpreter/expr/BoolExpr.h
 

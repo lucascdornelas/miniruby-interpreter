@@ -3,6 +3,7 @@
 
 #include <string>
 #include "Expr.h"
+#include "../value/Value.h"
 #include "../util/Memory.h"
 
 class Variable : public Expr {
@@ -10,14 +11,12 @@ public:
   Variable(int line, const std::string& name);
   virtual ~Variable();
 
+  virtual Type* expr(); 
+  void setValue(Type* value);
   const std::string& getName() const { return name; }
-  virtual std::vector<Type*>* expr(); 
-  void setValue(std::vector<Type*>* value);
-  
 
 private:
   std::string name;
-  std::vector<Type*>* value;
 };
 
 #endif

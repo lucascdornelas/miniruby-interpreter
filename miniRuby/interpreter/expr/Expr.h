@@ -6,9 +6,11 @@
 class Expr{
 	public:
 		virtual ~Expr(){}
+
 		int getLine() const{return m_line;}
 
 		virtual Type* expr() = 0;
+		
 	protected:
 		Expr(int line)	:	m_line(line){}
 

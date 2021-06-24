@@ -3,6 +3,7 @@
 
 #include<list>
 #include "Command.h"
+#include "../value/Type.h"
 #include "../expr/Expr.h"
 
 class AssignCommand : public Command{
