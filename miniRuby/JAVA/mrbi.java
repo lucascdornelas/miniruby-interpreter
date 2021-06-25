@@ -1,6 +1,7 @@
 import lexical.Lexeme;
 import lexical.LexicalAnalysis;
 import lexical.TokenType;
+import syntatic.SyntaticAnalysis;
 
 
 public class mrbi {
@@ -16,8 +17,8 @@ public class mrbi {
 
             // O código a seguir é dado para testar o interpretador.
             // TODO: descomentar depois que o analisador léxico estiver OK.
-            //SyntaticAnalysis s = new SyntaticAnalysis(l);
-            //s.start();
+            SyntaticAnalysis s = new SyntaticAnalysis(l);
+            s.start();
             /*Command c = s.start();
             c.execute();
             */
@@ -25,7 +26,7 @@ public class mrbi {
             // O código a seguir é usado apenas para testar o analisador léxico.
             // TODO: depois de pronto, comentar o código abaixo.
             Lexeme lex = l.nextToken();
-            while (checkType(lex.type)) {
+            /*while (checkType(lex.type)) {
                 System.out.printf("(\"%s\", %s)\n", lex.token, lex.type);
                 lex = l.nextToken();
             }
@@ -40,7 +41,7 @@ public class mrbi {
                 default:
                     System.out.printf("(\"%s\", %s)\n", lex.token, lex.type);
                     break;
-            }
+            }*/
         } catch (Exception e) {
             System.err.println("Internal error: " + e.getMessage());
         }

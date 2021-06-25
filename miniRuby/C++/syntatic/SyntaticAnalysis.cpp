@@ -21,14 +21,14 @@ Command* SyntaticAnalysis::start() {
 }
 
 void SyntaticAnalysis::advance() {
-    // printf("Advanced (\"%s\", %s)\n",
-    // m_current.token.c_str(), tt2str(m_current.type).c_str());
+     printf("Advanced (\"%s\", %s)\n",
+     m_current.token.c_str(), tt2str(m_current.type).c_str());
     m_current = m_lex.nextToken();
 }
 
 void SyntaticAnalysis::eat(enum TokenType type) {
-    // printf("Expected (..., %s), found (\"%s\", %s)\n",
-    // tt2str(type).c_str(), m_current.token.c_str(), tt2str(m_current.type).c_str());
+     printf("Expected (..., %s), found (\"%s\", %s)\n",
+     tt2str(type).c_str(), m_current.token.c_str(), tt2str(m_current.type).c_str());
     if (type == m_current.type)
         m_current = m_lex.nextToken();
     else

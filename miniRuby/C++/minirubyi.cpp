@@ -20,14 +20,14 @@ int main(int argc, char *argv[])
         // O código a seguir é dado para testar o interpretador.
         // TODO: descomentar depois que o analisador léxico estiver OK.
         SyntaticAnalysis s(l);
-        //s.start();
+        s.start();
 
         //Command* c = s.start();
         //c->execute();
         //delete c;
 
         struct Lexeme lex;
-        while ((lex = l.nextToken()).type > 0)
+       /* while ((lex = l.nextToken()).type > 0)
         {
             printf("(\"%s\", %s)\n", lex.token.c_str(), tt2str(lex.type).c_str());
         }
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
             printf("(\"%s\", %s)\n", lex.token.c_str(), tt2str(lex.type).c_str());
             break;
         }
-
+        */
     }
 
     catch (std::string msg)
