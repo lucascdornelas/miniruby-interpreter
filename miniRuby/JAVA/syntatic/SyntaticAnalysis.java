@@ -477,16 +477,28 @@ public class SyntaticAnalysis {
     }
 
     // <function> ::= '.' ( length | to_i | to_s )
-    private void procFunction() throws LexicalException, IOException {
+    private FunctionExpr procFunction() throws LexicalException, IOException {
+        int line = lex.getLine();
+
         eat(TokenType.DOT);
-        if(current.type == TokenType.LENGTH)
-           advance();
-        else if(current.type == TokenType.TO_INT)
-           advance();
-        else if(current.type == TokenType.TO_STR)
-           advance();
+
+        FunctionOp op = null;
+        if(current.type == TokenType.LENGTH) {
+            op = FunctionOp.LengthOp;
+            advance();
+        }
+        else if(current.type == TokenType.TO_INT) {
+            op = FunctionOp.ToIntOp;
+            advance();
+        }
+        else if(current.type == TokenType.TO_STR) {
+            op = FunctionOp.ToToStr;
+            advance();
+        }
         else
             showError();
+
+        FunctionExpr fexpr = new FunctionExpr(line, expr, op);
     }
 
     private ConstExpr procInteger() throws LexicalException, IOException {
