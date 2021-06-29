@@ -12,6 +12,5 @@ public abstract class BoolExpr {
         return line;
     }
 
-    public abstract boolean expr();
-
+    public abstract Boolean expr();
 }
