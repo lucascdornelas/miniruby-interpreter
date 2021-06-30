@@ -1,0 +1,61 @@
+# Get a range.
+puts 'Escolha dois numeros: ';
+min = gets.to_i;
+max = gets.to_i;
+
+# Invert them if necessary.
+min, max = max, min if min > max;
+
+# Compute the sum.
+sum = 0;
+for e in min..max do
+  sum = sum + e;
+end
+
+# Get how many chances?
+puts 'Calculei o somatorio da progressao de ' + min.to_s + ' ate ' + max.to_s + '.';
+print 'Com quantas chances voce quer tentar acertar esse valor? ';
+chances = gets.to_i;
+
+# Attempts.
+n = 0;
+found = 0;
+attempts = [];
+while n < chances and found != 1 do
+  n = n + 1;
+  print '  Chance ' + n.to_s + ' de ' + chances.to_s + ': ';
+
+  x = gets.to_i;
+  if x === attempts then
+    puts 'Voce ja tentou o valor ' + x.to_s;
+    n = n - 1;
+  else
+    if x < sum
+      puts 'O valor e maior que ' + x.to_s;
+    elsif x > sum
+      puts 'O valor e menor que ' + x.to_s;
+    else
+      puts 'Parabens, voce acertou.';
+      found = 1;
+    end
+
+    attempts = attempts + [x];
+  end
+end
+
+# Print loser.
+puts 'Voce nao conseguiu. O valor correto era ' + sum.to_s + '.' if found != 1;
+
+# Print all attempts.
+i = 0;
+while i < attempts.length do
+  if i == 0 then
+    print '  Voce tentou os seguintes valores: ';
+  else
+    print ', ';
+  end
+
+  print attempts[i].to_s;
+  i = i + 1;
+end
+puts;

@@ -1,0 +1,3 @@
+print 'Value: ';
+a = gets;
+puts 'You entered ' + a;
