@@ -19,7 +19,6 @@ public class SingleBoolExpr extends BoolExpr{
 
     @Override
     public Boolean expr() {
-        Boolean boolValue = null;
         Value<?> left = this.left.expr();
         Value<?> right = this.right.expr();
 
@@ -27,7 +26,7 @@ public class SingleBoolExpr extends BoolExpr{
             case EqualsOp:
                 // validade if left and right is Integer
                 if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    return left.value() == right.value();
+                    return (left.value() == right.value());
                 // else validade if left and right is String
                 }else if ( left instanceof StringValue && right instanceof StringValue ) {
                     return left.value().equals(right.value());
@@ -97,7 +96,9 @@ public class SingleBoolExpr extends BoolExpr{
                     return ((String) left.value()).contains((String) (right.value()));
                 }else {
                     return ((Vector) left.value()).contains((Vector) (right.value()));
-                }  
+                }
+            default: 
+                return false;
         }
     }
 }
