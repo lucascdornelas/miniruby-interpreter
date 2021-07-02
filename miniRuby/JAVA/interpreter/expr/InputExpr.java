@@ -24,18 +24,17 @@ public class InputExpr extends Expr {
         if(this.op == InputOp.GetsOp) {
             String str = input.nextLine().trim();
             StringValue strValue = new StringValue(str);
-            return strValue;
+            return (Value<?>) strValue;
 
         }
         else if(this.op == InputOp.RandOp) {
             int numberRandom = rand.nextInt();
             IntegerValue intValue = new IntegerValue(numberRandom);
-            return intValue;
+            return (Value<?>) intValue;
         }
         else {
             Abort.abort(super.getLine());
             return null;
         }
-
     }
 }

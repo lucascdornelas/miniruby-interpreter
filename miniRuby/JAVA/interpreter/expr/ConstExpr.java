@@ -15,6 +15,5 @@ public class ConstExpr extends Expr {
     public Value<?> expr() {
         return value;
     }
-
 }
 
