@@ -1,1 +1,1 @@
-# tiny-interpreter
+# miniRuby-interpreter
