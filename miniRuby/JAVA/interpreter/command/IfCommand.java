@@ -1,16 +1,17 @@
 package interpreter.command;
-
 import interpreter.expr.BoolExpr;
+import interpreter.util.Abort;
 
 public class IfCommand extends Command {
     private BoolExpr cond;
     private Command thenCmds;
     private Command elseCmds;
 
-    public IfCommand(int line, BoolExpr cond, Command thenCmds) {
+    public IfCommand(int line, BoolExpr cond, Command thenCmds, Command elseCmds) {
         super(line);
         this.thenCmds = thenCmds;
         this.cond = cond;
+        this.elseCmds = elseCmds;
     }
 
     public void setElseCommands(Command elseCommand) {
@@ -22,8 +23,11 @@ public class IfCommand extends Command {
         if(this.cond.expr()){
             this.thenCmds.execute();
         }else {
-            if(this.elseCmds != null) { 
+            if(this.elseCmds != null) {
                 this.elseCmds.execute();
+            }
+            else {
+                Abort.abort(super.getLine());
             }
         }
     }

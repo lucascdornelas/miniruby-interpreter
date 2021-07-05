@@ -34,7 +34,8 @@ public class SingleBoolExpr extends BoolExpr{
                     // else left or right is Array throw exception
                     System.out.println("Exception: type array not support Equals comparator.");
                 }
-            
+                // break;
+
             case NotEqualsOp:
                 // validade if left and right is Integer
                 if ( left instanceof IntegerValue && right instanceof IntegerValue) {
@@ -45,9 +46,10 @@ public class SingleBoolExpr extends BoolExpr{
                 }else {
                     // else left or right is Array throw exception
                     System.out.println("Exception: type array not support NotEquals comparator. ");
-                }   
+                }
+                // break;
 
-            case LowerThanOp: 
+            case LowerThanOp:
                 // validade if left and right is Integer
                 if ( left instanceof IntegerValue && right instanceof IntegerValue) {
                     return ((Integer) left.value() < (Integer) right.value());
@@ -55,8 +57,10 @@ public class SingleBoolExpr extends BoolExpr{
                 }else {
                     // else left or right is String/Array  throw exception
                     System.out.println("Exception: type String/Array not support LowerThanOp comparator. ");
-                }     
-            case LowerEqualOp: 
+                }
+                // break;
+
+            case LowerEqualOp:
 
                 // validade if left and right is Integer
                 if ( left instanceof IntegerValue && right instanceof IntegerValue) {
@@ -65,9 +69,11 @@ public class SingleBoolExpr extends BoolExpr{
                 }else {
                     // else left or right is String/Array  throw exception
                     System.out.println("Exception: type String/Array not support LowerEqualOp comparator.");
-                }   
+                }
+                // break;
+
             case GreaterThanOp:
-            
+
                 // validade if left and right is Integer
                 if ( left instanceof IntegerValue && right instanceof IntegerValue) {
                     return ((Integer) left.value() > (Integer) right.value());
@@ -76,6 +82,8 @@ public class SingleBoolExpr extends BoolExpr{
                     // else left or right is String/Array  throw exception
                     System.out.println("Exception: type String/Array not support GreaterThanOp comparator.");
                 }
+                // break;
+
             case GreaterEqualOp:
 
                 // validade if left and right is Integer
@@ -85,7 +93,9 @@ public class SingleBoolExpr extends BoolExpr{
                 }else {
                     // else left or right is String/Array  throw exception
                     System.out.println("Exception: type String/Array not support GreaterEqualOp comparator.");
-                }    
+                }
+                // break;
+
             case ContainsOp:
 
                 // validade if left and right is Integer
@@ -95,9 +105,11 @@ public class SingleBoolExpr extends BoolExpr{
                 }else if ( left instanceof StringValue && right instanceof StringValue ) {
                     return ((String) left.value()).contains((String) (right.value()));
                 }else {
-                    return ((Vector) left.value()).contains((Vector) (right.value()));
+                    return ((Vector<?>) left.value()).contains((Vector<?>) (right.value()));
                 }
-            default: 
+                // break;
+
+            default:
                 return false;
         }
     }
