@@ -39,11 +39,21 @@ public class FunctionExpr extends Expr {
 
                 return value;
             case ToIntOp:
+                if(value instanceof StringValue){
+                    StringValue stringValue = (StringValue) value;
+                    String string = stringValue.value();
 
+                    Integer stringInteger = Integer.parseInt(string);
+
+                    IntegerValue integerValue = new IntegerValue(stringInteger);
+
+                    value = integerValue;
+                }else {
+                    Exit.exit(super.getLine());
+                }
 
             case ToStringOp:
                 String toString = value.toString();
-
                 return new StringValue(toString);
             default:
                 break;
