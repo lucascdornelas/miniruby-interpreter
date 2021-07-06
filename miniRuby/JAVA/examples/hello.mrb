@@ -1,1 +1,1 @@
-puts 'Ola mundo';
+puts 3...7;
