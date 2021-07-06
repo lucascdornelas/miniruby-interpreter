@@ -51,12 +51,13 @@ public class FunctionExpr extends Expr {
                 }else {
                     Exit.exit(super.getLine());
                 }
-
+                return value;
             case ToStringOp:
                 String toString = value.toString();
                 return new StringValue(toString);
             default:
-                break;
+                return null;
         }
+
     }
 }
