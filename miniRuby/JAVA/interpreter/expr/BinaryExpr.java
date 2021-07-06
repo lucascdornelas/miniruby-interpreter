@@ -38,13 +38,15 @@ public class BinaryExpr extends Expr{
                 if(left instanceof IntegerValue && right instanceof IntegerValue) {
                     Vector<Value<?>> resultVec = new Vector<Value<?>>();
 
-                    for(int count = leftValue; count <= rightValue+1; count ++) {
+                    for(int count = leftValue; count <= rightValue; count ++) {
                         IntegerValue integerValue_new = new IntegerValue(count);
                         resultVec.add(integerValue_new);
                     }
 
                     ArrayValue arrayValue_new = new ArrayValue(resultVec);
                     value = arrayValue_new;
+
+                    System.out.println(resultVec);
                 }
                 else {
                     Exit.exit(super.getLine());
@@ -55,7 +57,7 @@ public class BinaryExpr extends Expr{
                 if(left instanceof IntegerValue && right instanceof IntegerValue) {
                     Vector<Value<?>> resultVec = new Vector<Value<?>>();
 
-                    for(int count = leftValue; count < rightValue+1; count ++) {
+                    for(int count = leftValue; count < rightValue; count ++) {
                         IntegerValue integerValue_new = new IntegerValue(count);
                         resultVec.add(integerValue_new);
                     }
