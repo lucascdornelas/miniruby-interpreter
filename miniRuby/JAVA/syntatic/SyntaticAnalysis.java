@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import interpreter.command.AssignCommand;
 import interpreter.command.BlocksCommand;
 import interpreter.command.Command;
 import interpreter.command.ForCommand;
@@ -51,10 +52,12 @@ public class SyntaticAnalysis {
     }
 
     public Command start() throws LexicalException, IOException {
-        procCode();
+        Command cmd = null;
+        cmd = procCode();
 
         eat(TokenType.END_OF_FILE);
-        return null;
+        //return null;
+        return cmd;
     }
 
     private void advance() throws LexicalException, IOException {
