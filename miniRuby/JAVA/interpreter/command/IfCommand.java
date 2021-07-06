@@ -1,6 +1,6 @@
 package interpreter.command;
 import interpreter.expr.BoolExpr;
-import interpreter.util.Abort;
+import interpreter.util.Exit;
 
 public class IfCommand extends Command {
     private BoolExpr cond;
@@ -27,7 +27,7 @@ public class IfCommand extends Command {
                 this.elseCmds.execute();
             }
             else {
-                Abort.abort(super.getLine());
+                Exit.exit(super.getLine());
             }
         }
     }

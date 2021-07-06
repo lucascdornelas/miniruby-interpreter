@@ -3,7 +3,7 @@ package interpreter.expr;
 import java.util.Random;
 import java.util.Scanner;
 
-import interpreter.util.Abort;
+import interpreter.util.Exit;
 import interpreter.value.IntegerValue;
 import interpreter.value.StringValue;
 import interpreter.value.Value;
@@ -33,7 +33,7 @@ public class InputExpr extends Expr {
             return (Value<?>) intValue;
         }
         else {
-            Abort.abort(super.getLine());
+            Exit.exit(super.getLine());
             return null;
         }
     }

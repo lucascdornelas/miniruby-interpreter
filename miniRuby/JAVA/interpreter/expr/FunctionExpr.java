@@ -1,9 +1,8 @@
 package interpreter.expr;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
-import interpreter.util.Abort;
+import interpreter.util.Exit;
 import interpreter.value.ArrayValue;
 import interpreter.value.IntegerValue;
 import interpreter.value.StringValue;
@@ -35,13 +34,13 @@ public class FunctionExpr extends Expr {
 
                     value = integerSize;
                 }else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
-                
+
                 return value;
             case ToIntOp:
 
-            
+
             case ToStringOp:
                 String toString = value.toString();
 

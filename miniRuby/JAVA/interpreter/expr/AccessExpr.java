@@ -2,7 +2,7 @@ package interpreter.expr;
 
 import java.util.Vector;
 
-import interpreter.util.Abort;
+import interpreter.util.Exit;
 import interpreter.value.ArrayValue;
 import interpreter.value.IntegerValue;
 import interpreter.value.StringValue;
@@ -23,7 +23,7 @@ public class AccessExpr extends SetExpr{
         Value<?> value = base.expr();
 
         if(this.index == null) {
-            Abort.abort(super.getLine());
+            Exit.exit(super.getLine());
         }
         else {
             if(value instanceof ArrayValue) {
@@ -37,13 +37,13 @@ public class AccessExpr extends SetExpr{
                     indexVector = Integer.parseInt(index_aux.toString());
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
 
                 return vector.get(indexVector);
             }
             else {
-                Abort.abort(super.getLine());
+                Exit.exit(super.getLine());
             }
         }
 
@@ -85,7 +85,7 @@ public class AccessExpr extends SetExpr{
                     indexVector = Integer.parseInt(index_aux.toString());
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
 
                 vector.set(indexVector, value);
@@ -95,7 +95,7 @@ public class AccessExpr extends SetExpr{
 
             }
             else {
-                Abort.abort(super.getLine());
+                Exit.exit(super.getLine());
             }
         }
     }

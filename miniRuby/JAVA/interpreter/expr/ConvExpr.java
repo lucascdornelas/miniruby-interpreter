@@ -1,6 +1,6 @@
 package interpreter.expr;
 
-import interpreter.util.Abort;
+import interpreter.util.Exit;
 import interpreter.value.IntegerValue;
 import interpreter.value.Value;
 
@@ -27,8 +27,8 @@ public class ConvExpr extends Expr {
         Value<?> v = this.expr.expr();
 
         if(!(v instanceof IntegerValue))
-            Abort.abort(super.getLine());
-        
+            Exit.exit(super.getLine());
+
         if(op == ConvOp.MinusOp){
             IntegerValue iv = (IntegerValue) v;
             int n = iv.value();

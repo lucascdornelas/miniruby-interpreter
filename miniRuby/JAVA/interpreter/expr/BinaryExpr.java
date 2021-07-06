@@ -2,7 +2,7 @@ package interpreter.expr;
 
 import java.util.Vector;
 
-import interpreter.util.Abort;
+import interpreter.util.Exit;
 import interpreter.value.ArrayValue;
 import interpreter.value.IntegerValue;
 import interpreter.value.StringValue;
@@ -47,7 +47,7 @@ public class BinaryExpr extends Expr{
                     value = arrayValue_new;
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
                 break;
 
@@ -64,7 +64,7 @@ public class BinaryExpr extends Expr{
                     value = arrayValue_new;
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
                 break;
 
@@ -103,7 +103,7 @@ public class BinaryExpr extends Expr{
                             value = stringValue_new;
                         }
                         else {
-                            Abort.abort(super.getLine());
+                            Exit.exit(super.getLine());
                         }
                         break;
                     }
@@ -114,7 +114,7 @@ public class BinaryExpr extends Expr{
                     this.result = leftValue - rightValue;
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
                 break;
 
@@ -123,7 +123,7 @@ public class BinaryExpr extends Expr{
                     this.result = leftValue * rightValue;
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
                 break;
 
@@ -132,7 +132,7 @@ public class BinaryExpr extends Expr{
                     this.result = leftValue / rightValue;
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
                 break;
 
@@ -141,7 +141,7 @@ public class BinaryExpr extends Expr{
                     this.result = leftValue % rightValue;
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
                 break;
 
@@ -150,7 +150,7 @@ public class BinaryExpr extends Expr{
                     this.result = (int) Math.pow(leftValue,rightValue);
                 }
                 else {
-                    Abort.abort(super.getLine());
+                    Exit.exit(super.getLine());
                 }
                 break;
         }
