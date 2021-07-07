@@ -36,27 +36,25 @@ public class FunctionExpr extends Expr {
                 }else {
                     Exit.exit(super.getLine());
                 }
-
                 return value;
+
             case ToIntOp:
                 if(value instanceof StringValue){
-                    StringValue stringValue = (StringValue) value;
-                    String string = stringValue.value();
-
-                    Integer stringInteger = Integer.parseInt(string);
-
-                    IntegerValue integerValue = new IntegerValue(stringInteger);
-
-                    value = integerValue;
+                    String toString = value.toString();
+                    int size = Integer.parseInt(toString);
+                    IntegerValue integerSize = new IntegerValue(size);
+                    value = integerSize;
                 }else {
                     Exit.exit(super.getLine());
                 }
                 return value;
+
             case ToStringOp:
                 String toString = value.toString();
                 return new StringValue(toString);
+
             default:
-                return null;
+                return value;
         }
 
     }

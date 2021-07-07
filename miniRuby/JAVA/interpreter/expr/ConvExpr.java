@@ -24,19 +24,19 @@ public class ConvExpr extends Expr {
 
     @Override
     public Value<?> expr() {
-        Value<?> v = this.expr.expr();
+        Value<?> value = this.expr.expr();
 
-        if(!(v instanceof IntegerValue))
+        if(!(value instanceof IntegerValue))
             Exit.exit(super.getLine());
 
         if(op == ConvOp.MinusOp){
-            IntegerValue iv = (IntegerValue) v;
-            int n = iv.value();
+            IntegerValue integerValue = (IntegerValue) value;
+            int num = integerValue.value();
 
-            IntegerValue neg = new IntegerValue(-n);
-            v = neg;
+            IntegerValue neg = new IntegerValue(-num);
+            value = neg;
         }
 
-        return v;
+        return value;
     }
 }

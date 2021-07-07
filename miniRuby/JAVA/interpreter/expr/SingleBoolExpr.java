@@ -1,7 +1,8 @@
 package interpreter.expr;
 
 import java.util.Vector;
-
+import interpreter.util.Exit;
+import interpreter.value.ArrayValue;
 import interpreter.value.IntegerValue;
 import interpreter.value.StringValue;
 import interpreter.value.Value;
@@ -21,96 +22,130 @@ public class SingleBoolExpr extends BoolExpr{
     public Boolean expr() {
         Value<?> left = this.left.expr();
         Value<?> right = this.right.expr();
+        Boolean resp = null;
+
+        int leftValue = Integer.parseInt(left.toString());
+        int rightValue = Integer.parseInt(right.toString());
 
         switch (this.op) {
             case EqualsOp:
-                // validade if left and right is Integer
-                if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    return (left.value() == right.value());
-                // else validade if left and right is String
-                }else if ( left instanceof StringValue && right instanceof StringValue ) {
-                    return left.value().equals(right.value());
-                }else {
-                    // else left or right is Array throw exception
-                    System.out.println("Exception: type array not support Equals comparator.");
-                }
-                // break;
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        if (leftValue == rightValue)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else if (left instanceof StringValue && right instanceof StringValue) {
+                        String leftValueS = left.toString();
+                        String rightValueS = right.toString();
+
+                        if (leftValueS == rightValueS)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
+
+                break;
 
             case NotEqualsOp:
-                // validade if left and right is Integer
-                if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    return left.value() != right.value();
-                // else validade if left and right is String
-                }else if ( left instanceof StringValue && right instanceof StringValue ) {
-                    return !left.value().equals(right.value());
-                }else {
-                    // else left or right is Array throw exception
-                    System.out.println("Exception: type array not support NotEquals comparator. ");
-                }
-                // break;
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+
+                        if (leftValue != rightValue)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else if (left instanceof StringValue && right instanceof StringValue) {
+                        String leftValueS = left.toString();
+                        String rightValueS = right.toString();
+
+                        if (leftValueS != rightValueS)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
+                break;
 
             case LowerThanOp:
-                // validade if left and right is Integer
-                if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    return ((Integer) left.value() < (Integer) right.value());
-                // else validade if left and right is String
-                }else {
-                    // else left or right is String/Array  throw exception
-                    System.out.println("Exception: type String/Array not support LowerThanOp comparator. ");
-                }
-                // break;
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+
+                        if (leftValue < rightValue)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
+                break;
 
             case LowerEqualOp:
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
 
-                // validade if left and right is Integer
-                if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    return ((Integer) left.value() <= (Integer) right.value());
-                // else validade if left and right is String
-                }else {
-                    // else left or right is String/Array  throw exception
-                    System.out.println("Exception: type String/Array not support LowerEqualOp comparator.");
-                }
-                // break;
+                        if (leftValue <= rightValue)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
+                break;
 
             case GreaterThanOp:
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
 
-                // validade if left and right is Integer
-                if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    return ((Integer) left.value() > (Integer) right.value());
-                // else validade if left and right is String
-                }else {
-                    // else left or right is String/Array  throw exception
-                    System.out.println("Exception: type String/Array not support GreaterThanOp comparator.");
-                }
-                // break;
+                        if (leftValue > rightValue)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
+                break;
 
             case GreaterEqualOp:
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
 
-                // validade if left and right is Integer
-                if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    return ((Integer) left.value() >= (Integer) right.value());
-                // else validade if left and right is String
-                }else {
-                    // else left or right is String/Array  throw exception
-                    System.out.println("Exception: type String/Array not support GreaterEqualOp comparator.");
-                }
-                // break;
+                        if (leftValue >= rightValue)
+                            resp = true;
+                        else
+                            resp = false;
+
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
+                break;
 
             case ContainsOp:
+                    if (left instanceof IntegerValue && right instanceof ArrayValue) {
+                        ArrayValue arrayValue = (ArrayValue) right;
+                        Vector<Value<?> > vec = arrayValue.value();
+                        if (vec.contains(left))
+                            resp = true;
+                        else
+                            resp = false;
 
-                // validade if left and right is Integer
-                if ( left instanceof IntegerValue && right instanceof IntegerValue) {
-                    System.out.println("Exception: type  not support ContainsOp comparator. ");
-                // else validade if left and right is String
-                }else if ( left instanceof StringValue && right instanceof StringValue ) {
-                    return ((String) left.value()).contains((String) (right.value()));
-                }else {
-                    return ((Vector<?>) left.value()).contains((Vector<?>) (right.value()));
-                }
-                // break;
+                    } else if (left instanceof StringValue && right instanceof ArrayValue) {
+                        ArrayValue arrayValue = (ArrayValue) right;
+                        Vector<Value<?> > vec = arrayValue.value();
+                        if (vec.contains(left))
+                            resp = true;
+                        else
+                            resp = false;
 
-            default:
-                return false;
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
+                break;
         }
+        return resp;
     }
 }

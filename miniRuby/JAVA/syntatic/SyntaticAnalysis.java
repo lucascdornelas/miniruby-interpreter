@@ -574,7 +574,7 @@ public class SyntaticAnalysis {
 			advance();
 			right = procPower();
 
-			BinaryExpr binaryexpr = new BinaryExpr( line,  right,  op,  left);
+			BinaryExpr binaryexpr = new BinaryExpr(line, right, op, left);
 			left = binaryexpr;
 		}
 
@@ -596,7 +596,7 @@ public class SyntaticAnalysis {
 			advance();
 			right = procFactor();
 
-			BinaryExpr binaryexpr = new BinaryExpr( line,  right,  op,  left);
+			BinaryExpr binaryexpr = new BinaryExpr(line, right, op, left);
 			left = binaryexpr;
 		}
 

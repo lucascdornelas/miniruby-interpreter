@@ -15,13 +15,18 @@ public class CompositeBoolExpr extends BoolExpr{
 
     @Override
     public Boolean expr() {
+        Boolean resp = null, respLeft = left.expr(), respRight = right.expr();
         switch(this.op){
             case And:
-                return (left.expr() && right.expr());
+                if (respLeft && respRight)
+                    resp = true;
+            break;
 
             case Or:
-                return (left.expr() || right.expr());
+                if (respLeft || respRight)
+                    resp = true;
+            break;
         }
-        return null;
+        return resp;
     }
 }

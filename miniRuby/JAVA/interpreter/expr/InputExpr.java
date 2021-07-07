@@ -21,20 +21,23 @@ public class InputExpr extends Expr {
 
     @Override
     public Value<?>expr() {
+        Value<?> value = null;
         if(this.op == InputOp.GetsOp) {
             String str = input.nextLine().trim();
             StringValue strValue = new StringValue(str);
-            return (Value<?>) strValue;
+            value = strValue;
+            return value;
 
         }
         else if(this.op == InputOp.RandOp) {
             int numberRandom = rand.nextInt();
             IntegerValue intValue = new IntegerValue(numberRandom);
-            return (Value<?>) intValue;
+            value = intValue;
+            return value;
         }
         else {
             Exit.exit(super.getLine());
-            return null;
         }
+        return value;
     }
 }
