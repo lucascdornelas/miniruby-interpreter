@@ -44,7 +44,7 @@ public class LexicalAnalysis implements AutoCloseable {
                     }
                     else if (c == '\n')
                     {
-                        line++;
+                        this.line++;
                         state = 1;
                     }
                     else if (c == '#')
@@ -111,7 +111,7 @@ public class LexicalAnalysis implements AutoCloseable {
                 case 2:
                     if (c == '\n')
                     {
-                        line++;
+                        this.line++;
                         state = 1;
                     }
                     else if (c == -1)
@@ -134,7 +134,7 @@ public class LexicalAnalysis implements AutoCloseable {
                     else
                     {
                         if (c != -1)
-                                ungetc(c);
+                            ungetc(c);
 
                         state = 12;
                     }
@@ -213,6 +213,11 @@ public class LexicalAnalysis implements AutoCloseable {
                             lex.type = TokenType.UNEXPECTED_EOF;
                             state = 13;
                         }
+                        else {
+                            ungetc(c);
+                            lex.type = TokenType.INVALID_TOKEN;
+                            state = 13;
+                        }
                     }
                     break;
 
@@ -239,48 +244,37 @@ public class LexicalAnalysis implements AutoCloseable {
                     }
                     else
                     {
-                        if(c != -1)
+                        if(c != -1) {
                             ungetc(c);
-
-                        lex.type = TokenType.INTEGER;
-                        state = 13;
+                            lex.type = TokenType.INTEGER;
+                            state = 13;
+                        }
+                        else {
+                            lex.type = TokenType.UNEXPECTED_EOF;
+                            state = 13;
+                        }
                     }
                     break;
 
                 case 11:
-                    if (c != '\'')
-                    {
-                        if(c == ';')
-                        {
-                            lex.type = TokenType.UNEXPECTED_EOF;
-                            state = 13;
-                        }
-                        else
-                        {
-                            lex.token += (char)c;
-                            state = 11;
-                        }
+                    if (c != '\'') {
+                        lex.token += (char) c;
+						state = 11;
                     }
-                    else
-                    {
-                        if (c == -1)
-                        {
-                            //ungetc(c);
-                            lex.type = TokenType.UNEXPECTED_EOF;
-                            state = 13;
-                        }
-                        else
-                        {
-                            // lex.token += (char)c;
+                    else if (c != -1) {
                             lex.type = TokenType.STRING;
                             state = 13;
                         }
-                    }
+                        else {
+                            lex.type = TokenType.UNEXPECTED_EOF;
+                            state = 13;
+                        }
+
                     break;
 
                 default:
                     throw new LexicalException("Unreachable");
-            }
+                }
         }
 
         if (state == 12)
