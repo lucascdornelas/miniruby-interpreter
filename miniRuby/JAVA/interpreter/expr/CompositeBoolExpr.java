@@ -15,7 +15,7 @@ public class CompositeBoolExpr extends BoolExpr{
 
     @Override
     public Boolean expr() {
-        Boolean resp = null, respLeft = left.expr(), respRight = right.expr();
+        Boolean resp = false, respLeft = left.expr(), respRight = right.expr();
         switch(this.op){
             case And:
                 if (respLeft && respRight)

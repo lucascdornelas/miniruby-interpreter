@@ -51,7 +51,7 @@ public class FunctionExpr extends Expr {
 
             case ToStringOp:
                 String toString = value.toString();
-                return new StringValue(toString);
+                return (new StringValue(toString));
 
             default:
                 return value;

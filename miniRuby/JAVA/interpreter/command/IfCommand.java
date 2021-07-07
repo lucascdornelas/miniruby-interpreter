@@ -26,9 +26,6 @@ public class IfCommand extends Command {
             if(this.elseCmds != null) {
                 this.elseCmds.execute();
             }
-            else {
-                Exit.exit(super.getLine());
-            }
         }
     }
 }

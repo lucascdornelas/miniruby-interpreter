@@ -1,7 +1,7 @@
 import interpreter.command.Command;
-import lexical.Lexeme;
+//import lexical.Lexeme;
 import lexical.LexicalAnalysis;
-import lexical.TokenType;
+//import lexical.TokenType;
 import syntatic.SyntaticAnalysis;
 
 
@@ -17,6 +17,7 @@ public class mrbi {
             // O código a seguir é dado para testar o interpretador.
             // TODO: descomentar depois que o analisador léxico estiver OK.
             SyntaticAnalysis s = new SyntaticAnalysis(l);
+            //s.start();
             Command c = s.start();
             c.execute();
 
@@ -45,10 +46,10 @@ public class mrbi {
             System.err.println("Internal error: " + e.getMessage());
         }
     }
-
+/*
     private static boolean checkType(TokenType type) {
         return !(type == TokenType.END_OF_FILE ||
                  type == TokenType.INVALID_TOKEN ||
                  type == TokenType.UNEXPECTED_EOF);
-    }
+    }*/
 }
