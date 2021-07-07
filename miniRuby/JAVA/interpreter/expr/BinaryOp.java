@@ -9,4 +9,4 @@ public enum BinaryOp {
     DivOp,
     ModOp,
     ExpOp
-}
+};

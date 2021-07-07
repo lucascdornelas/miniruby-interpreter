@@ -107,15 +107,21 @@ public class SingleBoolExpr extends BoolExpr{
 
             case ContainsOp:
                     if (left instanceof IntegerValue && right instanceof ArrayValue) {
+                        System.out.println(left.toString());
                         ArrayValue arrayValue = (ArrayValue) right;
                         Vector<Value<?> > vector = arrayValue.value();
-                        if (vector.contains(left))
+
+                        if (vector.contains(left)) {
                             bool = true;
+                            return bool;
+                        }
                         } else if (left instanceof StringValue && right instanceof ArrayValue) {
                             ArrayValue arrayValue = (ArrayValue) right;
                             Vector<Value<?> > vector = arrayValue.value();
-                            if (vector.contains(left))
+                            if (vector.contains(left)) {
                                 bool = true;
+                                return bool;
+                            }
                             } else {
                                 Exit.exit(super.getLine());
                         }

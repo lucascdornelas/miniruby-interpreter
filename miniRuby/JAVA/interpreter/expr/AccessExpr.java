@@ -79,7 +79,7 @@ public class AccessExpr extends SetExpr {
                 Value<?> ind = this.index.expr();
                     int index = 0;
                     ArrayValue arrayValue = (ArrayValue) value;
-                    Vector<Value<?> > vector = arrayValue.value();
+                    Vector<Value<?>> vector = arrayValue.value();
 
                     if(ind instanceof IntegerValue) {
                         index = Integer.parseInt(ind.toString());

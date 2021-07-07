@@ -4,4 +4,4 @@ public enum FunctionOp {
     LengthOp,
     ToIntOp,
     ToStringOp
-}
+};
