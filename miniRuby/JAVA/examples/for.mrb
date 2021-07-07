@@ -1,0 +1,5 @@
+a = 1..5;
+for x in a do
+  print x.to_s + ' ';
+end
+puts;

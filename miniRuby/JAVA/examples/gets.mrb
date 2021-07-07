@@ -1,0 +1,2 @@
+print 'Entre com seu nome: ';
+puts gets;

@@ -1,0 +1,18 @@
+a = rand;
+a = -a if a < 0;
+puts a;
+
+b = a % 5;
+if b == 0 then
+  print 'resto 0';
+elsif b == 1 then
+  print 'resto 1';
+elsif b == 2 then
+  print 'resto 2';
+elsif b == 3 then
+  print 'resto 3';
+else
+  print 'resto 4';
+end
+
+puts ' de 5';

@@ -1,0 +1,4 @@
+a = rand;
+print a.to_s + ' eh ';
+puts 'impar' unless (a % 2) == 0;
+puts 'par' unless (a % 2) != 0;

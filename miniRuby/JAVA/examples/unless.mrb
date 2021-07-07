@@ -1,0 +1,7 @@
+a = rand;
+print a.to_s + ' eh ';
+unless (a % 2) == 0 then
+  puts 'impar';
+else
+  puts 'par';
+end
