@@ -27,27 +27,27 @@ public class ForCommand extends Command{
         Value<?> value = this.expr.expr();
 
         if (value instanceof IntegerValue) {
-            var.setValue(new IntegerValue(0));
+            this.var.setValue(new IntegerValue(0));
             int i = Integer.parseInt(var.expr().toString());
             int iv = Integer.parseInt(value.toString());
 
             while (i < iv) {
-                cmds.execute();
+                this.cmds.execute();
                 i++;
-                var.setValue(new IntegerValue(i));
+                this.var.setValue(new IntegerValue(i));
             }
 
         } else if (value instanceof ArrayValue) {
-                    ArrayValue av = (ArrayValue) value;
-                    Vector<Value<?>> vec = av.value();
-                    int i = Integer.parseInt(vec.firstElement().toString());
-                    var.setValue(new IntegerValue(i));
-                    int last = Integer.parseInt(vec.lastElement().toString());
+                    ArrayValue arrayValue = (ArrayValue) value;
+                    Vector<Value<?>> vector = arrayValue.value();
+                    int first = Integer.parseInt(vector.firstElement().toString());
+                    this.var.setValue(new IntegerValue(first));
+                    int last = Integer.parseInt(vector.lastElement().toString());
 
-                    while (i < last) {
-                        cmds.execute();
-                        i++;
-                        var.setValue(new IntegerValue(i));
+                    while (first < last) {
+                        this.cmds.execute();
+                        first++;
+                        this.var.setValue(new IntegerValue(first));
                     }
 
             } else {
