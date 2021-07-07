@@ -15,7 +15,8 @@ public class UntilCommand extends Command {
 
         @Override
         public void execute() {
-            while (!cond.expr())
-            cmds.execute();
+            while (!cond.expr()) {
+                cmds.execute();
+            }
         }
 }
