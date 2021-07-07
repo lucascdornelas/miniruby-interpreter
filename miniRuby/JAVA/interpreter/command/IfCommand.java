@@ -1,6 +1,5 @@
 package interpreter.command;
 import interpreter.expr.BoolExpr;
-import interpreter.util.Exit;
 
 public class IfCommand extends Command {
     private BoolExpr cond;
