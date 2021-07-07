@@ -51,7 +51,6 @@ public class SyntaticAnalysis {
 		this.current = lex.nextToken();
 	}
 
-
     public Command start() throws LexicalException, IOException {
         Command cmd = null;
         cmd = procCode();
@@ -114,43 +113,46 @@ public class SyntaticAnalysis {
 			Command cmd = procCmd();
 			cmds.add(cmd);
 		}
-		BlocksCommand blockscmd = new BlocksCommand(line, cmds);
-		return blockscmd;
+		BlocksCommand blocksCmd = new BlocksCommand(line, cmds);
+		return blocksCmd;
 	}
 
 	// <cmd> ::= <if> | <unless> | <while> | <until> | <for> | <output>| <assign>
 	private Command procCmd() throws LexicalException, IOException {
 		Command cmd = null;
 		if (current.type == TokenType.IF) {
-			IfCommand ifcmd = procIf();
-			cmd = ifcmd;
+			IfCommand ifCmd = procIf();
+			cmd = ifCmd;
 
 		} else if (current.type == TokenType.UNLESS) {
-			UnlessCommand unlesscmd = procUnless();
-			cmd = unlesscmd;
+			UnlessCommand unlessCmd = procUnless();
+			cmd = unlessCmd;
 
 		} else if (current.type == TokenType.WHILE) {
-			WhileCommand whilecmds = procWhile();
-			cmd = whilecmds;
+			WhileCommand whileCmds = procWhile();
+			cmd = whileCmds;
 
 		} else if (current.type == TokenType.UNTIL) {
-			UntilCommand untilcmd = procUntil();
-			cmd = untilcmd;
+			UntilCommand untilCmd = procUntil();
+			cmd = untilCmd;
 
 		} else if (current.type == TokenType.FOR) {
-			ForCommand forcmd = procFor();
-			cmd = forcmd;
+			ForCommand forCmd = procFor();
+			cmd = forCmd;
 
 		} else if (current.type == TokenType.PRINT || current.type == TokenType.PUTS) {
+            // OutputCommand outputCmd = procOutput();
+			// cmd = outputCmd;
 			cmd = procOutput();
 
 		} else if (current.type == TokenType.ID || current.type == TokenType.OPEN_PAR) {
+            // AssignCommand assignCmd = procAssign();
+			// cmd = assignCmd;
 			cmd = procAssign();
 
 		} else {
 			showError();
 		}
-
 		return cmd;
 	}
 
@@ -158,7 +160,7 @@ public class SyntaticAnalysis {
 	private IfCommand procIf() throws LexicalException, IOException {
 		int line = lex.getLine();
         BoolExpr cond = null;
-        Command thencmds = null, elseCmds = null;
+        Command thenCmds = null, elseCmds = null;
 
 		eat(TokenType.IF);
 
@@ -167,11 +169,11 @@ public class SyntaticAnalysis {
 		if(current.type == TokenType.THEN)
 			advance();
 
-		thencmds = procCode();
+		thenCmds = procCode();
 
-		IfCommand ifcmd = new IfCommand(line, cond, thencmds, elseCmds);
-		Vector<IfCommand> vec = new Vector<IfCommand>();
-		int i = 0;
+		IfCommand ifCmd = new IfCommand(line, cond, thenCmds, elseCmds);
+		Vector<IfCommand> vector = new Vector<IfCommand>();
+		int index = 0;
 
 		while(current.type == TokenType.ELSIF) {
 			int line_aux = lex.getLine();
@@ -185,14 +187,13 @@ public class SyntaticAnalysis {
 			if(current.type == TokenType.THEN)
 				advance();
 
-
 			thenCmds_aux = procCode();
 
-			vec.add(new IfCommand(line_aux, cond_aux, thenCmds_aux, elseCmds_aux));
-			if (vec.size() > 1) {
-				vec.get(i-1).setElseCommands(vec.get(i));
+			vector.add(new IfCommand(line_aux, cond_aux, thenCmds_aux, elseCmds_aux));
+			if (vector.size() > 1) {
+				vector.get(index-1).setElseCommands(vector.get(index));
 			}
-			i++;
+			index++;
 		}
 
 		if (current.type == TokenType.ELSE) {
@@ -200,27 +201,27 @@ public class SyntaticAnalysis {
 			elseCmds = procCode();
 		}
 
-		if (!(vec.isEmpty())) {
-			vec.lastElement().setElseCommands(elseCmds);
-			ifcmd.setElseCommands(vec.firstElement());
+		if (!(vector.isEmpty())) {
+			vector.lastElement().setElseCommands(elseCmds);
+			ifCmd.setElseCommands(vector.firstElement());
 		} else {
-			ifcmd.setElseCommands(elseCmds);
+			ifCmd.setElseCommands(elseCmds);
 		}
 
 		eat(TokenType.END);
 
-		return ifcmd;
+		return ifCmd;
 	}
 
 	// <unless> ::= unless <boolexpr> [ then ] <code> [ else <code> ] end
 	private UnlessCommand procUnless() throws LexicalException, IOException {
 		int line = lex.getLine();
-        BoolExpr boolexpr = null;
+        BoolExpr boolExpr = null;
         Command thenCmds = null, elseCmds = null;
 
 		eat(TokenType.UNLESS);
 
-		boolexpr = procBoolexpr();
+		boolExpr = procBoolexpr();
 
 		if(current.type == TokenType.THEN) {
 			advance();
@@ -235,8 +236,8 @@ public class SyntaticAnalysis {
 
 		eat(TokenType.END);
 
-		UnlessCommand unlesscmd = new UnlessCommand(line, boolexpr, thenCmds, elseCmds);
-		return unlesscmd;
+		UnlessCommand unlessCmd = new UnlessCommand(line, boolExpr, thenCmds, elseCmds);
+		return unlessCmd;
 	}
 
 	// <while> ::= while <boolexpr> [ do ] <code> end
@@ -256,8 +257,8 @@ public class SyntaticAnalysis {
 
 		eat(TokenType.END);
 
-		WhileCommand whilecmds = new WhileCommand(line, cond, cmds);
-		return whilecmds;
+		WhileCommand whileCmd = new WhileCommand(line, cond, cmds);
+		return whileCmd;
 	}
 
 	// <until> ::= until <boolexpr> [ do ] <code> end
@@ -277,8 +278,8 @@ public class SyntaticAnalysis {
 
 		eat(TokenType.END);
 
-		UntilCommand untilcmd = new UntilCommand (line, cond, cmds);
-		return untilcmd;
+		UntilCommand untilCmd = new UntilCommand (line, cond, cmds);
+		return untilCmd;
 	}
 
 	// <for> ::= for <id> in <expr> [ do ] <code> end
@@ -303,8 +304,8 @@ public class SyntaticAnalysis {
 
 		eat(TokenType.END);
 
-		ForCommand forcmd = new ForCommand (line, var, expr, cmd);
-		return forcmd;
+		ForCommand forCmd = new ForCommand (line, var, expr, cmd);
+		return forCmd;
 	}
 
 	// <output> ::= ( puts | print ) [ <expr> ] [ <post> ] ';'
@@ -338,13 +339,12 @@ public class SyntaticAnalysis {
             expr = procExpr();
         }
 
-
-        OutputCommand outputcmd = new OutputCommand(line, op, expr);
+        OutputCommand outputCmd = new OutputCommand(line, op, expr);
 
 		if (current.type == TokenType.IF || current.type == TokenType.UNLESS) {
-            cmd = procPost(outputcmd);
+            cmd = procPost(outputCmd);
         } else {
-			cmd = outputcmd;
+			cmd = outputCmd;
 		}
 
         eat(TokenType.SEMI_COLON);
@@ -374,12 +374,12 @@ public class SyntaticAnalysis {
 			right.add(procExpr());
 		}
 
-		AssignCommand assigncmd = new AssignCommand(line, left, right);
+		AssignCommand assignCmd = new AssignCommand(line, left, right);
 
 		if (current.type == TokenType.IF || current.type == TokenType.UNLESS) {
-            cmd = procPost(assigncmd);
+            cmd = procPost(assignCmd);
         } else {
-			cmd = assigncmd;
+			cmd = assignCmd;
 		}
 
 		eat(TokenType.SEMI_COLON);
@@ -388,9 +388,9 @@ public class SyntaticAnalysis {
 	}
 
 	// <post> ::= ( if | unless ) <boolexpr>
-	private Command procPost(Command cmdIn) throws LexicalException, IOException {
+	private Command procPost(Command command) throws LexicalException, IOException {
 		int line = lex.getLine();
-		BoolExpr boolexpr = null;
+		BoolExpr boolExpr = null;
         Command cmd = null;
 		int cmdOp = 0;
 
@@ -402,14 +402,14 @@ public class SyntaticAnalysis {
 			cmdOp = 2;
 		}
 
-		boolexpr = procBoolexpr();
+		boolExpr = procBoolexpr();
 
 		if(cmdOp == 1) {
-			IfCommand ifcmd = new IfCommand(line, boolexpr, cmdIn, null);
-			cmd = ifcmd;
+			IfCommand ifCmd = new IfCommand(line, boolExpr, command, null);
+			cmd = ifCmd;
 		} else if (cmdOp == 2) {
-			UnlessCommand unlesscmd = new UnlessCommand(line, boolexpr, cmdIn, null);
-			cmd = unlesscmd;
+			UnlessCommand unlessCmd = new UnlessCommand(line, boolExpr, command, null);
+			cmd = unlessCmd;
 		}
 
 		return cmd;
@@ -418,7 +418,7 @@ public class SyntaticAnalysis {
 	// <boolexpr> ::= [ not ] <cmpexpr> [ ( and | or ) <boolexpr> ]
 	private BoolExpr procBoolexpr() throws LexicalException, IOException {
 		int line = lex.getLine();
-		BoolExpr boolexpr = null, left = null, right = null;
+		BoolExpr boolExpr = null, left = null, right = null;
 		boolean bol = false;
 		BoolOp op = null;
 
@@ -443,21 +443,22 @@ public class SyntaticAnalysis {
 			CompositeBoolExpr compositeBoolexpr = new CompositeBoolExpr(line, left, op, right);
 			if (bol) {
 				NotBoolExpr notBoolexpr = new NotBoolExpr(line, compositeBoolexpr);
-				boolexpr = notBoolexpr;
+				boolExpr = notBoolexpr;
 			} else {
-				boolexpr = compositeBoolexpr;
+				boolExpr = compositeBoolexpr;
 			}
 		} else {
-			boolexpr = left;
+			boolExpr = left;
 		}
 
-		return boolexpr;
+		return boolExpr;
 	}
 
 	// <cmpexpr> ::= <expr> ( '==' | '!=' | '<' | '<=' | '>' | '>='| '===' ) <expr>
 	private BoolExpr procCmpExpr() throws LexicalException, IOException {
 		Expr left = null, right = null;
 		RelOp op = null;
+        BoolExpr boolExpr = null;
 		int line = lex.getLine();
 
 		left = procExpr();
@@ -491,10 +492,10 @@ public class SyntaticAnalysis {
 
 		right = procExpr();
 
-		SingleBoolExpr singleBoolexpr = new SingleBoolExpr( line,  right,  op,  left);
-		BoolExpr boolexpr = singleBoolexpr;
+		SingleBoolExpr singleBoolexpr = new SingleBoolExpr(line, right, op, left);
+		boolExpr = singleBoolexpr;
 
-		return boolexpr;
+		return boolExpr;
 	}
 
 	// <expr> ::= <arith> [ ( '..' | '...' ) <arith> ]
@@ -518,8 +519,8 @@ public class SyntaticAnalysis {
 		int line = lex.getLine();
 
 		if (op != null) {
-			BinaryExpr binaryexpr = new BinaryExpr(line, right, op, left);
-			expr = binaryexpr;
+			BinaryExpr binaryExpr = new BinaryExpr(line, right, op, left);
+			expr = binaryExpr;
 		} else {
 			expr = left;
 		}
@@ -546,8 +547,8 @@ public class SyntaticAnalysis {
 			advance();
 			right = procTerm();
 
-			BinaryExpr binaryexpr = new BinaryExpr(line, right, op, left);
-			left = binaryexpr;
+			BinaryExpr binaryExpr = new BinaryExpr(line, right, op, left);
+			left = binaryExpr;
 		}
 		expr = left;
 		return expr;
@@ -574,8 +575,8 @@ public class SyntaticAnalysis {
 			advance();
 			right = procPower();
 
-			BinaryExpr binaryexpr = new BinaryExpr(line, right, op, left);
-			left = binaryexpr;
+			BinaryExpr binaryExpr = new BinaryExpr(line, right, op, left);
+			left = binaryExpr;
 		}
 
 		expr = left;
@@ -596,8 +597,8 @@ public class SyntaticAnalysis {
 			advance();
 			right = procFactor();
 
-			BinaryExpr binaryexpr = new BinaryExpr(line, right, op, left);
-			left = binaryexpr;
+			BinaryExpr binaryExpr = new BinaryExpr(line, right, op, left);
+			left = binaryExpr;
 		}
 
 		expr = left;
@@ -630,13 +631,13 @@ public class SyntaticAnalysis {
 		}
 
 		if (current.type == TokenType.DOT) {
-			FunctionExpr functionexpr = procFunction(expr);
-			expr = functionexpr;
+			FunctionExpr functionExpr = procFunction(expr);
+			expr = functionExpr;
 		}
 
 		if (op != null ) {
-			ConvExpr convexpr = new ConvExpr(line, op, expr);
-			expr = convexpr;
+			ConvExpr convExpr = new ConvExpr(line, op, expr);
+			expr = convExpr;
 		}
 
 		return expr;
@@ -675,8 +676,8 @@ public class SyntaticAnalysis {
 			showError();
 		}
 
-		InputExpr inputexpr = new InputExpr(line, op);
-		return inputexpr;
+		InputExpr inputExpr = new InputExpr(line, op);
+		return inputExpr;
 	}
 
 	// <array> ::= '[' [ <expr> { ',' <expr> } ] ']'
@@ -705,8 +706,8 @@ public class SyntaticAnalysis {
 
 		eat(TokenType.CLOSE_BRA);
 
-		ArrayExpr arrayexpr = new ArrayExpr(line, exprs);
-		return arrayexpr;
+		ArrayExpr arrayExpr = new ArrayExpr(line, exprs);
+		return arrayExpr;
 	}
 
 	// <access> ::= ( <id> | '(' <expr> ')' ) [ '[' <expr> ']' ]
@@ -731,8 +732,8 @@ public class SyntaticAnalysis {
 		   eat(TokenType.CLOSE_BRA);
 	   }
 
-	   AccessExpr accessexpr = new AccessExpr(line, base, index);
-	   expr = accessexpr;
+	   AccessExpr accessExpr = new AccessExpr(line, base, index);
+	   expr = accessExpr;
 
 	   return expr;
 	}
@@ -757,9 +758,9 @@ public class SyntaticAnalysis {
 			showError();
 		}
 
-		FunctionExpr functionexpr = new FunctionExpr(line, expr, op);
+		FunctionExpr functionExpr = new FunctionExpr(line, expr, op);
 
-		return functionexpr;
+		return functionExpr;
 	}
 
 	// <integer>
@@ -776,9 +777,9 @@ public class SyntaticAnalysis {
 		}
 
 		IntegerValue integerValue = new IntegerValue (num);
-		ConstExpr constexpr = new ConstExpr (line, integerValue);
+		ConstExpr constExpr = new ConstExpr (line, integerValue);
 
-		return constexpr;
+		return constExpr;
 	}
 
 	// <string>
@@ -789,9 +790,9 @@ public class SyntaticAnalysis {
 		int line = lex.getLine();
 
 		StringValue stringValue = new StringValue (str);
-		ConstExpr constexpr = new ConstExpr (line, stringValue);
+		ConstExpr constExpr = new ConstExpr (line, stringValue);
 
-		return constexpr;
+		return constExpr;
 	}
 
 	// <id>
@@ -800,8 +801,8 @@ public class SyntaticAnalysis {
 		eat(TokenType.ID);
 		int line = lex.getLine();
 
-		Variable v = new Variable (line, str);
+		Variable var = new Variable (line, str);
 
-		return v;
+		return var;
 	}
 }
