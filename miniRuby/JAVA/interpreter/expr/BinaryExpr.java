@@ -8,159 +8,181 @@ import interpreter.value.IntegerValue;
 import interpreter.value.StringValue;
 import interpreter.value.Value;
 
-public class BinaryExpr extends Expr{
-    private Expr left;
-    private BinaryOp op;
-    private Expr right;
-    private int result;
+public class BinaryExpr extends Expr {
 
-    public BinaryExpr (int line, Expr left, BinaryOp op, Expr right) {
+    private Expr left;
+    private Expr right;
+    private BinaryOp op;
+
+    public BinaryExpr (int line, Expr right, BinaryOp op, Expr left) {
         super(line);
-        this.left = left;
-        this.op = op;
         this.right = right;
-        this.result = 0;
+        this.op = op;
+        this.left = left;
     }
 
     @Override
-    public Value<?> expr() {
-        Value<?> value = null;
+    public Value<?> expr () {
+        Value<?> v_result = null;
         Value<?> left = this.left.expr();
         Value<?> right = this.right.expr();
 
-        int leftValue = Integer.parseInt(left.toString());
-        int rightValue = Integer.parseInt(right.toString());
+        int leftValue, rightValue;
 
-        int result;
-
-        switch(this.op) {
+        switch (op) {
             case RangeWithOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    Vector<Value<?>> resultVec = new Vector<Value<?>>();
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        System.out.println(leftValue + " " + rightValue);
+                        Vector<Value<?>> vector = new Vector<Value<?>>();
 
-                    for(int count = leftValue; count <= rightValue; count ++) {
-                        IntegerValue integerValue_new = new IntegerValue(count);
-                        resultVec.add(integerValue_new);
+                        if(leftValue < rightValue) {
+                            for (int i=leftValue; i<=rightValue; i++) {
+                                IntegerValue integerValue = new IntegerValue(i);
+                                vector.add(integerValue);
+                            }
+                        } else if (leftValue > rightValue) {
+                            for (int i=leftValue; i>=rightValue; i--) {
+                                IntegerValue integerValue = new IntegerValue(i);
+                                vector.add(integerValue);
+                            }
+                        } else {
+                            int l = leftValue;
+                            IntegerValue integerValue = new IntegerValue(l);
+                            vector.add(integerValue);
+                        }
+
+                        ArrayValue new_arrayValue = new ArrayValue(vector);
+                        v_result = new_arrayValue;
+
+                    } else {
+                        Exit.exit(super.getLine());
                     }
-
-                    ArrayValue arrayValue_new = new ArrayValue(resultVec);
-                    value = arrayValue_new;
-
-                    System.out.println(resultVec);
-                }
-                else {
-                    Exit.exit(super.getLine());
-                }
                 break;
 
             case RangeWithoutOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    Vector<Value<?>> resultVec = new Vector<Value<?>>();
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        Vector<Value<?>> vector = new Vector<Value<?>>();
 
-                    for(int count = leftValue; count < rightValue; count ++) {
-                        IntegerValue integerValue_new = new IntegerValue(count);
-                        resultVec.add(integerValue_new);
+                        if(leftValue < rightValue) {
+                            for (int i=leftValue; i<rightValue; i++) {
+                                IntegerValue integerValue = new IntegerValue(i);
+                                vector.add(integerValue);
+                            }
+                        } else if (leftValue > rightValue) {
+                            for (int i=leftValue; i>rightValue; i--) {
+                                IntegerValue integerValue = new IntegerValue(i);
+                                vector.add(integerValue);
+                            }
+                        }
+
+                        ArrayValue new_arrayValue = new ArrayValue(vector);
+                        v_result = new_arrayValue;
+
+                    } else {
+                        Exit.exit(super.getLine());
                     }
-
-                    ArrayValue arrayValue_new = new ArrayValue(resultVec);
-                    value = arrayValue_new;
-                }
-                else {
-                    Exit.exit(super.getLine());
-                }
                 break;
 
             case AddOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    result = leftValue + rightValue;
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        int value = leftValue + rightValue;
+                        IntegerValue new_integerValue = new IntegerValue (value);
+                        v_result = new_integerValue;
 
-                    IntegerValue integerValue_new = new IntegerValue(result);
-                    value = integerValue_new;
-                }
-                else {
-                    if(left instanceof ArrayValue && right instanceof ArrayValue) {
-                        Vector<Value<?>> resultVec = new Vector<Value<?>>();
+                    } else if (left instanceof ArrayValue && right instanceof ArrayValue) {
+                        Vector<Value<?>> vector = new Vector<Value<?>>();
 
-                        ArrayValue leftValueArray = (ArrayValue) left;
-                        ArrayValue rightValueArray = (ArrayValue) right;
-                        Vector<Value<?> > leftVector = leftValueArray.value();
-                        Vector<Value<?> > rightVector = rightValueArray.value();
+                        ArrayValue arrayLeftValue = (ArrayValue) left;
+                        ArrayValue arrayRightValue = (ArrayValue) right;
 
-                        resultVec.addAll(leftVector);
-                        resultVec.addAll(rightVector);
+                        Vector<Value<?> > leftValuevec = arrayLeftValue.value();
+                        Vector<Value<?> > rightValuevec = arrayRightValue.value();
 
-                        ArrayValue arrayValue_new = new ArrayValue(resultVec);
-                        value = arrayValue_new;
+                        vector.addAll(leftValuevec);
+                        vector.addAll(rightValuevec);
+
+                        ArrayValue new_arrayValue = new ArrayValue(vector);
+                        v_result = new_arrayValue;
+
+                    } else if (left instanceof StringValue && right instanceof StringValue) {
+                        String strLeftValue = left.toString();
+                        String strRightValue = right.toString();
+                        String value = strLeftValue + strRightValue;
+                        StringValue strIntegerValue = new StringValue (value);
+                        v_result = strIntegerValue;
+
+                    } else {
+                        Exit.exit(super.getLine());
                     }
-                    else {
-                        if(left instanceof StringValue && right instanceof StringValue) {
-                            String leftValueString = left.toString();
-                            leftValueString = leftValueString.replace("\'", "");
-                            String rightValueString = right.toString();
-                            rightValueString = rightValueString.replace("\'", "");
-                            String resultStr = leftValueString + rightValueString;
-                            String apostrophe = "\'";
-                            resultStr = apostrophe + resultStr + apostrophe;
-                            StringValue stringValue_new = new StringValue (resultStr);
-                            value = stringValue_new;
-                        }
-                        else {
-                            Exit.exit(super.getLine());
-                        }
-                        break;
-                    }
-                }
+                break;
 
             case SubOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    this.result = leftValue - rightValue;
-                }
-                else {
-                    Exit.exit(super.getLine());
-                }
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        int value = leftValue - rightValue;
+                        IntegerValue new_integerValue = new IntegerValue (value);
+                        v_result = new_integerValue;
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
                 break;
 
             case MulOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    this.result = leftValue * rightValue;
-                }
-                else {
-                    Exit.exit(super.getLine());
-                }
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        int value = leftValue * rightValue;
+                        IntegerValue new_integerValue = new IntegerValue (value);
+                        v_result = new_integerValue;
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
                 break;
 
             case DivOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    this.result = leftValue / rightValue;
-                }
-                else {
-                    Exit.exit(super.getLine());
-                }
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        int value = leftValue / rightValue;
+                        IntegerValue new_integerValue = new IntegerValue (value);
+                        v_result = new_integerValue;
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
                 break;
 
             case ModOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    this.result = leftValue % rightValue;
-                }
-                else {
-                    Exit.exit(super.getLine());
-                }
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        int value = leftValue % rightValue;
+                        IntegerValue new_integerValue = new IntegerValue (value);
+                        v_result = new_integerValue;
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
                 break;
 
             case ExpOp:
-                if(left instanceof IntegerValue && right instanceof IntegerValue) {
-                    this.result = (int) Math.pow(leftValue,rightValue);
-                }
-                else {
-                    Exit.exit(super.getLine());
-                }
+                    if (left instanceof IntegerValue && right instanceof IntegerValue) {
+                        leftValue = Integer.parseInt(left.toString());
+                        rightValue = Integer.parseInt(right.toString());
+                        int value = (int) Math.pow(leftValue,rightValue);
+                        IntegerValue new_integerValue = new IntegerValue (value);
+                        v_result = new_integerValue;
+                    } else {
+                        Exit.exit(super.getLine());
+                    }
                 break;
         }
 
-        if(this.op == BinaryOp.SubOp || this.op == BinaryOp.MulOp  || this.op == BinaryOp.DivOp || this.op == BinaryOp.ModOp || this.op == BinaryOp.ExpOp ) {
-            IntegerValue integerValue_new = new IntegerValue(this.result);
-            value = integerValue_new;
-        }
-        return value;
+        return v_result;
     }
 }
