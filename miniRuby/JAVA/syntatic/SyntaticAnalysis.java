@@ -401,6 +401,9 @@ public class SyntaticAnalysis {
 			advance();
 			cmdOp = 2;
 		}
+        else {
+            showError();
+        }
 
 		boolExpr = procBoolexpr();
 
@@ -482,7 +485,7 @@ public class SyntaticAnalysis {
 					op = RelOp.GreaterThanOp;
 				} else if (current.type == TokenType.GREATER_EQ) {
 					op = RelOp.GreaterEqualOp;
-				} else {
+				} else  {
 					op = RelOp.ContainsOp;
 				}
 				advance();
@@ -509,12 +512,13 @@ public class SyntaticAnalysis {
             current.type == TokenType.RANGE_WITHOUT) {
 			if (current.type == TokenType.RANGE_WITH) {
 				op = BinaryOp.RangeWithOp;
-			} else if (current.type == TokenType.RANGE_WITHOUT) {
+			} else  {
 				op = BinaryOp.RangeWithoutOp;
 			}
 			advance();
 			right = procArith();
 		}
+
 
 		int line = lex.getLine();
 
@@ -540,7 +544,7 @@ public class SyntaticAnalysis {
 
 			if (current.type == TokenType.ADD) {
 				op = BinaryOp.AddOp;
-			} else if (current.type == TokenType.SUB) {
+			} else {
 				op = BinaryOp.SubOp;
 			}
 
@@ -568,7 +572,7 @@ public class SyntaticAnalysis {
 				op = BinaryOp.MulOp;
 			} else if (current.type == TokenType.DIV) {
 				op = BinaryOp.DivOp;
-			} else if (current.type == TokenType.MOD) {
+			} else {
 				op = BinaryOp.ModOp;
 			}
 
