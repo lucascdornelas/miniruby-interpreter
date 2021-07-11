@@ -1,6 +1,6 @@
 # **Mini Ruby Interpreter**
 
-> **Sobre:** Interpretador da linguagem de programação Mini Ruby, uma versão reduzida da linguagem Ruby.  Trabalho realizado no curso de **Linguagem de Programação - Engenharia de Computação, CEFET/MG.**, ministrada pelo professor: [**Andrei Rimsa**](https://github.com/rimsa) 
+> **Sobre:** Interpretador da linguagem de programação Mini Ruby, uma versão reduzida da linguagem Ruby.  Trabalho realizado no curso de **Linguagem de Programação - Engenharia de Computação, CEFET/MG.** Ministrada pelo professor: [**Andrei Rimsa**](https://github.com/rimsa) 
 
 ## Instruções para execução:
 
